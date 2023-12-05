@@ -6,16 +6,70 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="com.example.idnp_sunshield.UV_index"
-        android:layout_width="318dp"
-        android:layout_height="352dp"
+    <TextView
+        android:id="@+id/huminity"
+        android:layout_width="103dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="56dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/minTempValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toEndOf="@+id/pressureValue"
+        app:layout_constraintTop_toBottomOf="@+id/mainTempValue"
+        app:layout_constraintVertical_bias="0.773" />
+
+    <TextView
+        android:id="@+id/pressureValue"
+        android:layout_width="103dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginBottom="60dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/maxTempValue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainTempValue"
+        app:layout_constraintVertical_bias="0.748" />
+
+    <TextView
+        android:id="@+id/maxTempValue"
+        android:layout_width="87dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginBottom="156dp"
+        android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/minTempValue"
+        android:layout_width="105dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="156dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toEndOf="@+id/maxTempValue" />
+
+    <TextView
+        android:id="@+id/mainTempValue"
+        android:layout_width="125dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="88dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cityname" />
+
+    <TextView
+        android:id="@+id/cityname"
+        android:layout_width="122dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="116dp"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.203" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
