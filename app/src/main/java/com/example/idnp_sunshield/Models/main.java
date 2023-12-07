@@ -9,13 +9,24 @@ public class main {
     public int pressure;
     public int humidity;
 
-    public main(double temp, double feels_like, double temp_max, double temp_min, int pressure, int humidity) {
+    public double uvi;
+
+    public main(double temp, double feels_like, double temp_max, double temp_min, int pressure, int humidity, double uvi) {
         this.temp = temp;
         this.feels_like = feels_like;
         this.temp_max = temp_max;
         this.temp_min = temp_min;
         this.pressure = pressure;
         this.humidity = humidity;
+        this.uvi = uvi;
+    }
+
+    public double getUvi() {
+        return uvi;
+    }
+
+    public void setUvi(double uvi) {
+        this.uvi = uvi;
     }
 
     public double getTemp() {
