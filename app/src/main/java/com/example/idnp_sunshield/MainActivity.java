@@ -1,6 +1,9 @@
 package com.example.idnp_sunshield;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
@@ -8,13 +11,9 @@ import com.example.idnp_sunshield.Models.MausanData;
 import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.Models.weather;
-
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,7 +21,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
     ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +33,28 @@ public class MainActivity extends AppCompatActivity {
         String currentdate = format.format(new Date());
         //binding.date.setText(currentdate);
         fetchWeather("Delhi");
+        //replaceFragment(new HomeFragment());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.forecast:
+                    replaceFragment(new Forecast());
+                    break;
+                case R.id.health:
+                    replaceFragment(new Health());
+                    break;
+                case R.id.alerts:
+                    replaceFragment(new Alerts());
+                    break;
+            }
+            return true;
+        });
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
     void fetchWeather (String cityname){
@@ -79,4 +99,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

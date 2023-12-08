@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"
+        />
+    <item
+        android:id="@+id/forecast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Forecast"
+        android:icon="@drawable/ic_baseline_wb_sunny"
+        />
+    <item
+        android:id="@+id/health"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Health"
+        android:icon="@drawable/ic_baseline_health_and_safety"
+        />
+    <item
+        android:id="@+id/alerts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Alerts"
+        android:icon="@drawable/ic_baseline_add_alert"
+        />
+</menu>
