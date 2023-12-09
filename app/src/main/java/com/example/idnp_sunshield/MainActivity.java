@@ -5,11 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -27,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new UV_index());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.forecast) {
+            if (item.getItemId() == R.id.uv_index) {
+                replaceFragment(new UV_index());
+            } else if (item.getItemId() == R.id.forecast) {
                 replaceFragment(new Forecast());
             } else if (item.getItemId() == R.id.health) {
                 replaceFragment(new Health());
