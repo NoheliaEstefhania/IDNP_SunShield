@@ -8,40 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UV_index#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.idnp_sunshield.Models.MausanData;
+import com.example.idnp_sunshield.Models.current;
+import com.example.idnp_sunshield.Models.main;
+import com.example.idnp_sunshield.databinding.ActivityMainBinding;
+import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class UV_index extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    FragmentUVIndexBinding binding;
     public UV_index() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UV_index.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UV_index newInstance(String param1, String param2) {
         UV_index fragment = new UV_index();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +35,65 @@ public class UV_index extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        binding = FragmentUVIndexBinding.inflate(getLayoutInflater());
+        //setContentView(binding.getRoot());
+        fetchWeather();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_u_v_index, container, false);
+        binding = FragmentUVIndexBinding.inflate(inflater, container, false);
+        fetchWeather();
+        return binding.getRoot();
+    }
+
+
+
+    public void fetchWeather (){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        System.out.println("retrofit: " + retrofit);
+        InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
+
+        Call<MausanData> call = interfaceApi.getData(-16.39889,-71.535,"hourly,daily","c71298943776351e81c2f4e84456a36d");
+        call.enqueue(new Callback<MausanData>() {
+            @Override
+            public void onResponse(Call<MausanData> call, Response<MausanData> response) {
+                if (response.isSuccessful()){
+                    MausanData mausanData = response.body();
+                    main to = mausanData.getMain();
+                    current tc = mausanData.getCurrent();
+                    System.out.println("Estoy en la respuesta");
+                    binding.uvTitle.setText("si rpta");
+                    //binding.uvIndexNumber.setText(String.valueOf(tc.getUvi()));
+                    binding.uvIndexNumber.setText(String.valueOf(tc.getUvi()));
+
+                    /*binding.mainTempValue.setText(String.valueOf(to.getTemp()) +"\\u2103");
+                    binding.maxTempValue.setText(String.valueOf(to.getTemp_max()));
+                    binding.minTempValue.setText(String.valueOf(to.getTemp_min()));
+
+                    binding.pressureValue.setText(String.valueOf(to.getPressure()));
+                    binding.cityname.setText(mausanData.getName());
+                    /*
+                    List<weather> description = mausanData.getWeather();
+
+                    for (weather data: description) {
+                        binding.description.setText(data.getDescription());
+                    }*/
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MausanData> call, Throwable t) {
+                binding.uvIndexNumber.setText("no rpta");
+            }
+        });
     }
 }
