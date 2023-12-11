@@ -14,6 +14,8 @@ import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,23 +72,24 @@ public class UV_index extends Fragment {
                     main to = mausanData.getMain();
                     current tc = mausanData.getCurrent();
                     System.out.println("Estoy en la respuesta");
-                    binding.uvTitle.setText("si rpta");
-                    //binding.uvIndexNumber.setText(String.valueOf(tc.getUvi()));
                     binding.uvIndexNumber.setText(String.valueOf(tc.getUvi()));
+                    HashMap<String, String> recomendaciones = new HashMap<>();
+                    recomendaciones.put("Bajo", "En días de sol, es recomendable usar gafas de sol. Si tu piel es sensible, no olvides el protector solar SPF 30+. Presta atención a las superficies que reflejan los rayos UV.");
+                    recomendaciones.put("Moderado", "Es mejor buscar sombra alrededor del mediodía. No olvides tu ropa protectora, sombrero y gafas de sol. Recuerda reaplicar el protector solar SPF 30+ cada dos horas.");
+                    recomendaciones.put("Alto", "Intenta limitar tu exposición al sol entre las 10 a. m y las 4 p. m. Busca sombra, viste ropa protectora, usa sombrero y gafas de sol. No olvides reaplicar el protector solar cada dos horas.");
+                    recomendaciones.put("Muy Alto", "Es aconsejable minimizar la exposición al sol entre las 10 a. m. y las 4 p. m. Busca sombra, viste ropa protectora, usa sombrero y gafas de sol. Recuerda reaplicar el protector solar cada dos horas.");
+                    recomendaciones.put("Extremo", "Evita la exposición al sol entre las 10 a. m. y las 4 p. m. Busca sombra, viste ropa protectora, usa sombrero y gafas de sol. Recuerda reaplicar el protector solar cada dos horas.");
 
-                    /*binding.mainTempValue.setText(String.valueOf(to.getTemp()) +"\\u2103");
-                    binding.maxTempValue.setText(String.valueOf(to.getTemp_max()));
-                    binding.minTempValue.setText(String.valueOf(to.getTemp_min()));
+                    String grado;
+                    if(tc.getUvi() <= 2) grado = "Bajo";
+                    else if(3 <= tc.getUvi() && tc.getUvi() <= 5) grado = "Moderado";
+                    else if(6 <= tc.getUvi() && tc.getUvi() <= 7) grado = "Alto";
+                    else if(8 <= tc.getUvi() && tc.getUvi() <= 10) grado = "Muy Alto";
+                    else grado = "Extremo";
 
-                    binding.pressureValue.setText(String.valueOf(to.getPressure()));
-                    binding.cityname.setText(mausanData.getName());
-                    /*
-                    List<weather> description = mausanData.getWeather();
-
-                    for (weather data: description) {
-                        binding.description.setText(data.getDescription());
-                    }*/
-
+                    binding.uvGrade.setText(grado);
+                    binding.uvRecomendation.setText(recomendaciones.get(grado));
+                    binding.uvDate.setText(date(tc.getDt()));
                 }
             }
 
@@ -95,5 +98,15 @@ public class UV_index extends Fragment {
                 binding.uvIndexNumber.setText("no rpta");
             }
         });
+    }
+
+    private String date(long timestamp){
+        //long timestamp = 1684929490L;
+        java.util.Date time=new java.util.Date((long)timestamp*1000);
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM dd, yyyy");
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/Lima"));
+        String formattedDate = sdf.format(time);
+        System.out.println("supuesta fecha: " + formattedDate);
+        return formattedDate;
     }
 }
