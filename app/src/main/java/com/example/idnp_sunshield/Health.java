@@ -2,11 +2,19 @@ package com.example.idnp_sunshield;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
+import com.example.idnp_sunshield.Helalth_fragments.Disease;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,9 +64,38 @@ public class Health extends Fragment {
     }
 
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_health, container, false);
+        //return inflater.inflate(R.layout.fragment_health, container, false);
+
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_health, container, false);
+
+        // Encuentra el ImageButton en tu fragmento
+        ImageButton imageButton = view.findViewById(R.id.imageButton01);
+
+        // Define un OnClickListener
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí es donde defines lo que quieres que suceda cuando se haga clic en el ImageButton
+                // Por ejemplo, puedes reemplazar un fragmento como este:
+
+                Fragment diseaseFragment = new Disease(); // Asegúrate de tener este fragmento definido
+                FragmentManager fragmentManager = getParentFragmentManager(); // Obtén el FragmentManager
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // Comienza la transacción
+
+                // Reemplaza el fragmento actual con el nuevo
+                fragmentTransaction.replace(R.id.fragment_health, diseaseFragment);
+                fragmentTransaction.addToBackStack(null);
+
+                // Finalmente, realiza la transacción
+                fragmentTransaction.commit();
+            }
+        });
+
+        return view;
     }
 }

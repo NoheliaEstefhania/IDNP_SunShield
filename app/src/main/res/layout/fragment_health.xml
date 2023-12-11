@@ -56,11 +56,10 @@
                         android:textStyle="bold" />
 
                     <ImageButton
-                        android:id="@+id/imageButton10"
+                        android:id="@+id/imageButton01"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/btn_star"
-                        tools:src="@tools:sample/avatars" />
+                        android:src="@drawable/img_disease" />
 
                     <TextView
                         android:id="@+id/textView_melanoma"
@@ -72,11 +71,10 @@
                         android:textStyle="bold" />
 
                     <ImageButton
-                        android:id="@+id/imageButton11"
+                        android:id="@+id/imageButton02"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/btn_star"
-                        tools:src="@tools:sample/avatars" />
+                        android:src="@drawable/img_disease" />
 
                     <TextView
                         android:id="@+id/textView__noMelamina"
@@ -88,11 +86,11 @@
                         android:textStyle="bold" />
 
                     <ImageButton
-                        android:id="@+id/imageButton12"
+                        android:id="@+id/imageButton03"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/btn_star"
-                        tools:src="@tools:sample/avatars" />
+                        android:src="@drawable/img_disease" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -110,27 +108,10 @@
                         android:textStyle="bold" />
 
                     <ImageButton
-                        android:id="@+id/imageButton13"
+                        android:id="@+id/imageButton04"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/btn_star"
-                        tools:src="@tools:sample/avatars" />
-
-                    <TextView
-                        android:id="@+id/textViewEyeDamamage4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Eye damage"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <ImageButton
-                        android:id="@+id/imageButton14"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/btn_star"
-                        tools:src="@tools:sample/avatars" />
+                        android:src="@drawable/img_disease" />
 
                     <TextView
                         android:id="@+id/textViewEyeDamamage"
@@ -142,11 +123,25 @@
                         android:textStyle="bold" />
 
                     <ImageButton
-                        android:id="@+id/imageButton15"
+                        android:id="@+id/imageButton05"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/btn_star"
-                        tools:src="@tools:sample/avatars" />
+                        android:src="@drawable/img_disease" />
+
+                    <TextView
+                        android:id="@+id/textViewEyeOthers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Eye damage"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton06"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_disease" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
