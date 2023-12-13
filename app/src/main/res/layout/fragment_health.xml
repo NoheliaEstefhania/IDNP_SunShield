@@ -9,11 +9,10 @@
     tools:context=".Health"
     tools:visibility="visible">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/health_text"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scrollbars="vertical" />
 
 </FrameLayout>
