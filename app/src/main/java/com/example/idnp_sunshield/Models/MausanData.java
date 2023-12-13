@@ -7,13 +7,25 @@ public class MausanData {
     private List<weather> weather;
     private main main;
     private current current;
+
+    private List<daily> daily;
     private String name;
 
-    public MausanData(List<com.example.idnp_sunshield.Models.weather> weather, com.example.idnp_sunshield.Models.main main, String name, com.example.idnp_sunshield.Models.current current) {
+    public MausanData(List<com.example.idnp_sunshield.Models.weather> weather, com.example.idnp_sunshield.Models.main main, String name,
+                      com.example.idnp_sunshield.Models.current current,List<com.example.idnp_sunshield.Models.daily> daily ) {
         this.weather = weather;
         this.main = main;
         this.name = name;
         this.current = current;
+        this.daily = daily;
+    }
+
+    public List<com.example.idnp_sunshield.Models.daily> getDaily() {
+        return daily;
+    }
+
+    public void setDaily(List<com.example.idnp_sunshield.Models.daily> daily) {
+        this.daily = daily;
     }
 
     public com.example.idnp_sunshield.Models.current getCurrent() {

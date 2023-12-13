@@ -8,6 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.idnp_sunshield.Models.MausanData;
+import com.example.idnp_sunshield.Models.current;
+import com.example.idnp_sunshield.Models.daily;
+import com.example.idnp_sunshield.Models.main;
+import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
+import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
+
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Forecast#newInstance} factory method to
@@ -15,50 +31,76 @@ import android.view.ViewGroup;
  */
 public class Forecast extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    FragmentForecastBinding binding;
     public Forecast() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Forecast.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Forecast newInstance(String param1, String param2) {
         Forecast fragment = new Forecast();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        binding = FragmentForecastBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_forecast, container, false);
+        binding = FragmentForecastBinding.inflate(inflater, container, false);
+        fetchWeather();
+        return binding.getRoot();
+    }
+
+    public void fetchWeather (){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        System.out.println("retrofit: " + retrofit);
+        InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
+
+        Call<MausanData> call = interfaceApi.getData(-16.39889,-71.535,"hourly,minutely","c71298943776351e81c2f4e84456a36d");
+        call.enqueue(new Callback<MausanData>() {
+            @Override
+            public void onResponse(Call<MausanData> call, Response<MausanData> response) {
+                if (response.isSuccessful()){
+                    MausanData mausanData = response.body();
+                    main to = mausanData.getMain();
+                    current tc = mausanData.getCurrent();
+                    List<daily> td = mausanData.getDaily();
+                    System.out.println("Estoy en la respuesta");
+                    binding.forecastTitle.setText("Estoy Reemplazando");
+                    for (daily daily : td) {
+                        System.out.println("dt: " + date(daily.getDt()));
+                        System.out.println("uv: " + daily.getUvi());
+                        // Procesa cada objeto Daily aquí...
+                    }
+                    /**/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MausanData> call, Throwable t) {
+                System.out.println("No conectado");
+            }
+        });
+    }
+
+    private String date(long timestamp){
+        //long timestamp = 1684929490L;
+        java.util.Date time=new java.util.Date((long)timestamp*1000);
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM dd, yyyy");
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/Lima"));
+        String formattedDate = sdf.format(time);
+        System.out.println("supuesta fecha: " + formattedDate);
+        return formattedDate;
     }
 }
