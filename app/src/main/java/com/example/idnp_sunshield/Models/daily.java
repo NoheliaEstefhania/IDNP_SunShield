@@ -1,10 +1,11 @@
 package com.example.idnp_sunshield.Models;
 
-public class current {
+public class daily {
+
     public double uvi;
     public long dt;
 
-    public current(double uvi, long dt) {
+    public daily(double uvi, long dt) {
         this.uvi = uvi;
         this.dt = dt;
     }

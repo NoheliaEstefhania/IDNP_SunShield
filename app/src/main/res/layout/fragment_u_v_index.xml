@@ -5,70 +5,84 @@
     android:id="@+id/uv_index"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#98FB98"
     tools:context=".UV_index">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="345dp"
+            android:layout_height="508dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5">
+            app:layout_constraintVertical_bias="0.387">
 
             <TextView
                 android:id="@+id/uv_title"
-                android:layout_width="138dp"
-                android:layout_height="66dp"
-                android:layout_marginTop="108dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="UV index"
+                android:textColor="#08A3E2"
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/uv_index_number"
-                android:layout_width="53dp"
-                android:layout_height="44dp"
-                android:layout_marginBottom="56dp"
-                android:text="13" />
+            <LinearLayout
+                android:layout_width="185dp"
+                android:layout_height="179dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/circle_background"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/uv_grade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="36dp"
-                android:text="extremo" />
+                <TextView
+                    android:id="@+id/uv_index_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="13"
+                    android:textSize="100sp" />
+
+                <TextView
+                    android:id="@+id/uv_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="extremo"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/uv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
-                android:text="Wednesday, November 29, 2023" />
+                android:layout_marginBottom="50dp"
+                android:text="Wednesday, November 29, 2023"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/uv_recomendation"
-                android:layout_width="234dp"
-                android:layout_height="78dp"
+                android:layout_width="330dp"
+                android:layout_height="128dp"
                 android:layout_marginBottom="164dp"
-                android:text="Recomendación: Si el índice UV es alto, es recomendable usar protector solar, vestir ropa de manga larga y evitar la exposición directa al sol" />
+                android:background="@drawable/rounded_border"
+                android:text="Recomendación: Si el índice UV es alto, es recomendable usar protector solar, vestir ropa de manga larga y evitar la exposición directa al sol"
+                android:textColor="#FEFFFF" />
 
         </LinearLayout>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="20dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
