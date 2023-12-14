@@ -1,4 +1,4 @@
-package com.example.idnp_sunshield;
+package com.example.idnp_sunshield.Fragments;
 
 import android.os.Bundle;
 
@@ -8,15 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.idnp_sunshield.BarChartView;
+import com.example.idnp_sunshield.InterfaceApi;
 import com.example.idnp_sunshield.Models.MausanData;
 import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.daily;
 import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
-import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;

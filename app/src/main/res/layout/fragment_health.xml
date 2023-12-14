@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#CDDC39"
     android:foregroundTint="#8BC34A"
-    tools:context=".Health"
+    tools:context=".Fragments.Health"
     tools:visibility="visible">
 
     <androidx.recyclerview.widget.RecyclerView

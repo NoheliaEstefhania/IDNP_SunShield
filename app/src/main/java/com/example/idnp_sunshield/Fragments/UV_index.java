@@ -1,21 +1,17 @@
-package com.example.idnp_sunshield;
+package com.example.idnp_sunshield.Fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.example.idnp_sunshield.InterfaceApi;
 import com.example.idnp_sunshield.Models.MausanData;
 import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.main;
-import com.example.idnp_sunshield.databinding.ActivityMainBinding;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
-
 import java.util.HashMap;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,8 +47,6 @@ public class UV_index extends Fragment {
         fetchWeather();
         return binding.getRoot();
     }
-
-
 
     public void fetchWeather (){
         Retrofit retrofit = new Retrofit.Builder()
@@ -99,7 +93,6 @@ public class UV_index extends Fragment {
             }
         });
     }
-
     private String date(long timestamp){
         //long timestamp = 1684929490L;
         java.util.Date time=new java.util.Date((long)timestamp*1000);

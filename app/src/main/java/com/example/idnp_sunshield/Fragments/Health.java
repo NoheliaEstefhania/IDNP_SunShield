@@ -1,4 +1,4 @@
-package com.example.idnp_sunshield;
+package com.example.idnp_sunshield.Fragments;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.idnp_sunshield.DetailFragment;
+import com.example.idnp_sunshield.R;
 
 public class Health extends Fragment {
     String[] names = {"disease01", "disease02", "disease03", "disease04", "disease05"};
