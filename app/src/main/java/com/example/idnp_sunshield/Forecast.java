@@ -15,6 +15,7 @@ import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,14 +25,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Forecast#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Forecast extends Fragment {
 
     FragmentForecastBinding binding;
+    private BarChartView barChartView;
+
     public Forecast() {
         // Required empty public constructor
     }
@@ -54,6 +52,8 @@ public class Forecast extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentForecastBinding.inflate(inflater, container, false);
+        barChartView = binding.barChartView;
+
         fetchWeather();
         return binding.getRoot();
     }
@@ -76,13 +76,16 @@ public class Forecast extends Fragment {
                     main to = mausanData.getMain();
                     current tc = mausanData.getCurrent();
                     List<daily> td = mausanData.getDaily();
+                    List<daily> dataList = new ArrayList<>();
                     System.out.println("Estoy en la respuesta");
                     binding.forecastTitle.setText("Estoy Reemplazando");
                     for (daily daily : td) {
                         System.out.println("dt: " + date(daily.getDt()));
                         System.out.println("uv: " + daily.getUvi());
+                        dataList.add(new daily(daily.getUvi() , daily.getDt()));
                         // Procesa cada objeto Daily aquí...
                     }
+                    barChartView.setdailyList(dataList);
                     /**/
                 }
             }
