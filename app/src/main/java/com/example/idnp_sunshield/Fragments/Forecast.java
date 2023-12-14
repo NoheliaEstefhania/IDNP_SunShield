@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.idnp_sunshield.BarChartView;
-import com.example.idnp_sunshield.InterfaceApi;
+import com.example.idnp_sunshield.Views.BarChartView;
+import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.MausanData;
 import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.daily;

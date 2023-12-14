@@ -1,4 +1,4 @@
-package com.example.idnp_sunshield;
+package com.example.idnp_sunshield.Interfaces;
 
 import retrofit2.Call;
 

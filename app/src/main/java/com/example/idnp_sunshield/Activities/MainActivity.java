@@ -1,4 +1,4 @@
-package com.example.idnp_sunshield;
+package com.example.idnp_sunshield.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,6 +10,7 @@ import com.example.idnp_sunshield.Fragments.Alerts;
 import com.example.idnp_sunshield.Fragments.Forecast;
 import com.example.idnp_sunshield.Fragments.Health;
 import com.example.idnp_sunshield.Fragments.UV_index;
+import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

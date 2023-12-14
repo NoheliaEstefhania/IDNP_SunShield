@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.idnp_sunshield.DetailFragment;
 import com.example.idnp_sunshield.R;
 
 public class Health extends Fragment {
@@ -68,7 +67,7 @@ public class Health extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // Crea una nueva instancia de tu fragmento de detalles
-                        DetailFragment detailFragment = DetailFragment.newInstance(names[getBindingAdapterPosition()], descriptions[getBindingAdapterPosition()], photos[getBindingAdapterPosition()]);
+                        UV_index.DetailFragment detailFragment = UV_index.DetailFragment.newInstance(names[getBindingAdapterPosition()], descriptions[getBindingAdapterPosition()], photos[getBindingAdapterPosition()]);
                         // Reemplaza el fragmento actual con el nuevo fragmento de detalles
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame_container, detailFragment);

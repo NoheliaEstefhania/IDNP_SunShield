@@ -1,4 +1,4 @@
-package com.example.idnp_sunshield;
+package com.example.idnp_sunshield.Views;
 
 import android.content.Context;
 import android.graphics.Canvas;
