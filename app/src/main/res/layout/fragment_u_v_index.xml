@@ -51,14 +51,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="13"
-                    android:textSize="100sp" />
+                    android:textSize="100px" />
 
                 <TextView
                     android:id="@+id/uv_grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="extremo"
+                    android:text="Extreme"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -80,7 +80,8 @@
                 android:layout_marginBottom="164dp"
                 android:background="@drawable/rounded_border"
                 android:text="Recomendación: Si el índice UV es alto, es recomendable usar protector solar, vestir ropa de manga larga y evitar la exposición directa al sol"
-                android:textColor="#FEFFFF" />
+                android:textColor="#FEFFFF"
+                android:padding="10dp" />
 
         </LinearLayout>
 
