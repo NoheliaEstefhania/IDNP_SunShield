@@ -8,7 +8,7 @@
         android:layout_width="343dp"
         android:layout_height="176dp"
         android:layout_weight="1"
-        android:src="@tools:sample/avatars" />
+        android:src="@drawable/img_disease01" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,14 +18,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView_nombre"
+            android:id="@+id/textView_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
             android:textSize="34sp" />
 
         <TextView
-            android:id="@+id/textView_precio"
+            android:id="@+id/textView_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
