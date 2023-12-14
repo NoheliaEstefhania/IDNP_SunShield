@@ -3,6 +3,7 @@ package com.example.idnp_sunshield;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ public class Health extends Fragment {
             holder.print(position);
         }
 
-        private class AdapterDiseaseHolder extends RecyclerView.ViewHolder{
+        private class AdapterDiseaseHolder extends RecyclerView.ViewHolder {
             TextView tv1, tv2;
             ImageView iv1;
 
@@ -58,6 +59,21 @@ public class Health extends Fragment {
                 iv1 = itemView.findViewById(R.id.imageView_disease);
                 tv1 = itemView.findViewById(R.id.textView_name);
                 tv2 = itemView.findViewById(R.id.textView_description);
+
+                // Agrega un OnClickListener a tu ImageView
+                iv1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Crea una nueva instancia de tu fragmento de detalles
+                        DetailFragment detailFragment = DetailFragment.newInstance(names[getBindingAdapterPosition()], descriptions[getBindingAdapterPosition()], photos[getBindingAdapterPosition()]);
+                        // Reemplaza el fragmento actual con el nuevo fragmento de detalles
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_container, detailFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+
+                });
             }
 
             public void print(int position) {
@@ -66,5 +82,6 @@ public class Health extends Fragment {
                 tv2.setText(descriptions[position]);
             }
         }
+
     }
 }
