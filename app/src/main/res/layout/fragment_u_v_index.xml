@@ -5,8 +5,8 @@
     android:id="@+id/uv_index"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#98FB98"
-    tools:context=".UV_index">
+    android:background="#E9F6E9"
+    tools:context=".Fragments.UV_index">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,26 +16,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/uv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="45dp"
+            android:text="UV index"
+            android:textAlignment="center"
+            android:textColor="#08A3E2"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <LinearLayout
-            android:layout_width="345dp"
-            android:layout_height="508dp"
+            android:id="@+id/linearLayout"
+            android:layout_width="388dp"
+            android:layout_height="560dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.387">
-
-            <TextView
-                android:id="@+id/uv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="UV index"
-                android:textColor="#08A3E2"
-                android:textSize="34sp"
-                android:textStyle="bold" />
+            app:layout_constraintTop_toBottomOf="@+id/uv_title">
 
             <LinearLayout
                 android:layout_width="185dp"
@@ -51,14 +57,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="13"
-                    android:textSize="100sp" />
+                    android:textSize="100px" />
 
                 <TextView
                     android:id="@+id/uv_grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="extremo"
+                    android:text="Extreme"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -79,6 +85,7 @@
                 android:layout_height="128dp"
                 android:layout_marginBottom="164dp"
                 android:background="@drawable/rounded_border"
+                android:padding="10dp"
                 android:text="Recomendación: Si el índice UV es alto, es recomendable usar protector solar, vestir ropa de manga larga y evitar la exposición directa al sol"
                 android:textColor="#FEFFFF" />
 
