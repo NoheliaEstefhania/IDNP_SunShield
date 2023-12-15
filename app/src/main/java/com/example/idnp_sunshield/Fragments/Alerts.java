@@ -14,7 +14,6 @@ import com.example.idnp_sunshield.Entity.DataBase;
 import com.example.idnp_sunshield.Entity.Illness;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.databinding.FragmentAlertsBinding;
-import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -28,10 +27,12 @@ public class Alerts extends Fragment {
 
     FragmentAlertsBinding binding;
 
+    // Default constructor
     public Alerts() {
         // Required empty public constructor
     }
 
+    // Factory method to create a new instance of the Alerts fragment
     public static Alerts newInstance(String param1, String param2) {
         Alerts fragment = new Alerts();
         Bundle args = new Bundle();
@@ -47,41 +48,47 @@ public class Alerts extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment using data binding
         binding = FragmentAlertsBinding.inflate(inflater, container, false);
+        // Call the data method to load and display information
         data();
+        // Return the root view of the fragment
         return binding.getRoot();
     }
 
+    // Method to load and display data in the fragment
     private void data(){
-        List<Illness> listaEnfermedades;
+        // List to store illnesses retrieved from the database
+        List<Illness> illnessList;
+
+        // Create or open the Room database
         DataBase dataBase = Room.databaseBuilder(
                 getActivity().getApplicationContext(),
-                DataBase.class,"dbPruebas"
+                DataBase.class,
+                "dbPruebas"
         ).allowMainThreadQueries().build();
+
+        // Dummy data: byte array representing an image (replace with actual image data)
         byte[] photos = {(byte) R.drawable.img_disease01};
 
-        // Cargar la imagen en un Bitmap
+        // Load the image into a Bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_disease01);
 
-// Convertir el Bitmap a un array de bytes
+        // Convert the Bitmap to a byte array
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
-// Ahora puedes guardar byteArray en tu base de datos
-        dataBase.getIllnessDAO().addIllness(new Illness("hola", "hola", byteArray));
-        listaEnfermedades = dataBase.getIllnessDAO().getAllIllnesses();
+        // Add an illness with the image to the database
+        dataBase.getIllnessDAO().addIllness(new Illness("In process", "In process", byteArray));
 
-        /*
-        dataBase.getIllnessDAO().addIllness(new Illness("hola", "hola", photos));
-        listaEnfermedades = dataBase.getIllnessDAO().getAllIllnesses();
-        binding.alertTextView.setText(listaEnfermedades.get(0).getTitle());
-        Bitmap bitmap = BitmapFactory.decodeByteArray(listaEnfermedades.get(0).getImage(), 0, listaEnfermedades.get(0).getImage().length);
-        /*/
-        binding.alertTextView.setText(listaEnfermedades.get(0).getTitle());
+        // Retrieve all illnesses from the database
+        illnessList = dataBase.getIllnessDAO().getAllIllnesses();
+
+        // Display the title of the first illness in the TextView
+        binding.alertTextView.setText(illnessList.get(0).getTitle());
+
+        // Display the image in the ImageView
         binding.imageView.setImageBitmap(bitmap);
     }
-
-
 }

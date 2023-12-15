@@ -2,15 +2,18 @@ package com.example.idnp_sunshield.Models;
 
 public class main {
 
-    public double temp;
-    public double feels_like;
-    public double temp_max;
-    public double temp_min;
-    public int pressure;
-    public int humidity;
+    // Fields representing main weather data
+    public double temp;         // Current temperature
+    public double feels_like;   // "Feels like" temperature
+    public double temp_max;     // Maximum temperature
+    public double temp_min;     // Minimum temperature
+    public int pressure;        // Atmospheric pressure
+    public int humidity;        // Humidity percentage
 
-    public double uvi;
+    // Additional field for UV Index
+    public double uvi;          // UV Index
 
+    // Constructor to initialize the object with specific values
     public main(double temp, double feels_like, double temp_max, double temp_min, int pressure, int humidity, double uvi) {
         this.temp = temp;
         this.feels_like = feels_like;
@@ -20,6 +23,9 @@ public class main {
         this.humidity = humidity;
         this.uvi = uvi;
     }
+
+    // Getter and Setter methods for each field
+    // (Getters are used to retrieve the values, and Setters are used to update the values)
 
     public double getUvi() {
         return uvi;

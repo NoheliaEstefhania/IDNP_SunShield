@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!-- Se especifica que la aplicación requiere el permiso de acceso a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Definición de la aplicación -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,18 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IDNP_SunShield"
         tools:targetApi="31">
-        <activity
-            android:name=".Home"
-            android:exported="false" />
+        <!-- Definición de la actividad principal -->
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
+            <!-- Filtro de intención para la actividad principal -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
