@@ -99,15 +99,15 @@ public class BarChartView extends View {
         // Aquí puedes implementar la lógica para asignar un color basado en el índice UV.
         // Este es solo un ejemplo y puede que necesites ajustarlo para tu caso de uso.
         if (uvIndex <= 2) {
-            return Color.MAGENTA;
+            return Color.parseColor("#08A3E2");
         } else if (uvIndex <= 5) {
-            return Color.YELLOW;
+            return Color.parseColor("800080"); //purple
         } else if (uvIndex <= 7) {
             return Color.RED;
         } else if (uvIndex <= 10) {
             return Color.BLUE;
         } else {
-            return Color.CYAN;
+            return Color.parseColor("#4DEEEE"); //blue sky
         }
     }
     @Override
