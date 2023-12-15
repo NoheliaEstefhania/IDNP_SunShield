@@ -1,11 +1,23 @@
 package com.example.idnp_sunshield.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.idnp_sunshield.Entity.DataBase;
+import com.example.idnp_sunshield.Entity.Illness;
 import com.example.idnp_sunshield.R;
+import com.example.idnp_sunshield.databinding.FragmentAlertsBinding;
+import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
+
+import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,33 +26,15 @@ import com.example.idnp_sunshield.R;
  */
 public class Alerts extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FragmentAlertsBinding binding;
 
     public Alerts() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Alerts.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Alerts newInstance(String param1, String param2) {
         Alerts fragment = new Alerts();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,16 +42,46 @@ public class Alerts extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alerts, container, false);
+        binding = FragmentAlertsBinding.inflate(inflater, container, false);
+        data();
+        return binding.getRoot();
     }
+
+    private void data(){
+        List<Illness> listaEnfermedades;
+        DataBase dataBase = Room.databaseBuilder(
+                getActivity().getApplicationContext(),
+                DataBase.class,"dbPruebas"
+        ).allowMainThreadQueries().build();
+        byte[] photos = {(byte) R.drawable.img_disease01};
+
+        // Cargar la imagen en un Bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_disease01);
+
+// Convertir el Bitmap a un array de bytes
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+// Ahora puedes guardar byteArray en tu base de datos
+        dataBase.getIllnessDAO().addIllness(new Illness("hola", "hola", byteArray));
+        listaEnfermedades = dataBase.getIllnessDAO().getAllIllnesses();
+
+        /*
+        dataBase.getIllnessDAO().addIllness(new Illness("hola", "hola", photos));
+        listaEnfermedades = dataBase.getIllnessDAO().getAllIllnesses();
+        binding.alertTextView.setText(listaEnfermedades.get(0).getTitle());
+        Bitmap bitmap = BitmapFactory.decodeByteArray(listaEnfermedades.get(0).getImage(), 0, listaEnfermedades.get(0).getImage().length);
+        /*/
+        binding.alertTextView.setText(listaEnfermedades.get(0).getTitle());
+        binding.imageView.setImageBitmap(bitmap);
+    }
+
+
 }
