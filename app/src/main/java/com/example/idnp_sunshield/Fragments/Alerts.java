@@ -1,5 +1,7 @@
 package com.example.idnp_sunshield.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
@@ -14,6 +16,7 @@ import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.databinding.FragmentAlertsBinding;
 import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
@@ -57,8 +60,28 @@ public class Alerts extends Fragment {
                 DataBase.class,"dbPruebas"
         ).allowMainThreadQueries().build();
         byte[] photos = {(byte) R.drawable.img_disease01};
+
+        // Cargar la imagen en un Bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_disease01);
+
+// Convertir el Bitmap a un array de bytes
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+// Ahora puedes guardar byteArray en tu base de datos
+        dataBase.getIllnessDAO().addIllness(new Illness("hola", "hola", byteArray));
+        listaEnfermedades = dataBase.getIllnessDAO().getAllIllnesses();
+
+        /*
         dataBase.getIllnessDAO().addIllness(new Illness("hola", "hola", photos));
         listaEnfermedades = dataBase.getIllnessDAO().getAllIllnesses();
         binding.alertTextView.setText(listaEnfermedades.get(0).getTitle());
+        Bitmap bitmap = BitmapFactory.decodeByteArray(listaEnfermedades.get(0).getImage(), 0, listaEnfermedades.get(0).getImage().length);
+        /*/
+        binding.alertTextView.setText(listaEnfermedades.get(0).getTitle());
+        binding.imageView.setImageBitmap(bitmap);
     }
+
+
 }
