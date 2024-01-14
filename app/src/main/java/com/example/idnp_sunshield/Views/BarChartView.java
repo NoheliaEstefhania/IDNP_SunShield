@@ -55,14 +55,16 @@ public class BarChartView extends View {
             float barWidth = (float) getWidth() / dailyList.size();
             // Define the spacing between the bars
             float spacing = 5;
+            float xAxisOffset = 40;
+            float yAxisOffset = 30;
 
             // Iterate over the daily data to draw the bars and legends
             for (int i = 0; i < dailyList.size(); i++) {
                 daily data = dailyList.get(i);
-                float left = i * barWidth + spacing;
-                float top = getHeight() - getUvHeight(data.getUvi());
-                float right = left + barWidth - 2 * spacing;
-                float bottom = getHeight();
+                float left = i * barWidth + spacing + yAxisOffset + 25;
+                float top = getHeight() - getUvHeight(data.getUvi()) - xAxisOffset;
+                float right = left + barWidth - 2 * spacing - 30;
+                float bottom = getHeight() - xAxisOffset;
 
                 // Set the color of the bar based on the UV index
                 paint.setColor(getColorForUvIndex(data.getUvi()));
@@ -70,28 +72,31 @@ public class BarChartView extends View {
                 canvas.drawRect(left, top, right, bottom, paint);
                 // Draw the legend on the X-axis
                 paint.setColor(Color.BLACK);
-                paint.setTextSize(35);
-                canvas.drawText(date(data.getDt()), left, getHeight() - 10, paint);
+                paint.setTextSize(40);
+                //canvas.drawText(date(data.getDt()), left, getHeight() - 10, paint);
+                canvas.drawText(date(data.getDt()), left, getHeight() + 40 - xAxisOffset, paint); // Ajusta el valor "20" según tus necesidades
             }
 
             // Draw the legend and lines on the Y-axis
             paint.setColor(Color.BLACK);
-            paint.setTextSize(60);
-            drawYAxisLabelAndLine(canvas, " ", getHeight());
-            drawYAxisLabelAndLine(canvas, "2", getHeight() - getUvHeight(2));
-            drawYAxisLabelAndLine(canvas, "5", getHeight() - getUvHeight(5));
-            drawYAxisLabelAndLine(canvas, "7", getHeight() - getUvHeight(7));
-            drawYAxisLabelAndLine(canvas, "10", getHeight() - getUvHeight(10));
-            drawYAxisLabelAndLine(canvas, "11+", getHeight() - getUvHeight(11));
+            paint.setTextSize(40);
+            System.out.println("Valor de getHeight: " + getHeight());
+            drawYAxisLabelAndLine(canvas, "0", getHeight());
+            drawYAxisLabelAndLine(canvas, "2", getHeight() - getUvHeight(2) + 30 - xAxisOffset);
+            drawYAxisLabelAndLine(canvas, "5", getHeight() - getUvHeight(5) + 30 - xAxisOffset);
+            drawYAxisLabelAndLine(canvas, "7", getHeight() - getUvHeight(7) + 30 - xAxisOffset);
+            drawYAxisLabelAndLine(canvas, "10", getHeight() - getUvHeight(10) + 30 - xAxisOffset);
+            drawYAxisLabelAndLine(canvas, "11+", getHeight() - getUvHeight(11) + 30 - xAxisOffset);
+            // Draw the legend on the X-axi
         }
     }
     // Method to draw a label and a horizontal line on the Y-axis
     private void drawYAxisLabelAndLine(Canvas canvas, String text, float y) {
         // Draw the label text at the specified position
-        canvas.drawText(text, 30, y, paint);
+        canvas.drawText(text, 20, y, paint);
 
         // Set the thickness of the line to be drawn next
-        paint.setStrokeWidth(2);
+        //paint.setStrokeWidth(2);
 
         // Draw a horizontal line on the Y-axis, from the left end to the right end of the canvas
         canvas.drawLine(0, y, getWidth(), y, paint);

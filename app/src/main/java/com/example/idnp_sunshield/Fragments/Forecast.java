@@ -79,6 +79,7 @@ public class Forecast extends Fragment {
                     List<daily> dataList = new ArrayList<>();
                     System.out.println("I am in the response");
                     binding.forecastTitle.setText("I am replacing");
+
                     for (daily daily : td) {
                         System.out.println("dt: " + date(daily.getDt()));
                         System.out.println("uv: " + daily.getUvi());
@@ -86,6 +87,7 @@ public class Forecast extends Fragment {
                         // Process each Daily object here...
                     }
                     barChartView.setdailyList(dataList);
+
                 }
             }
 
