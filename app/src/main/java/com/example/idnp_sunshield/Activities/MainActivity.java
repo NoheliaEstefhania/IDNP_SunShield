@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.example.idnp_sunshield.Fragments.Alerts;
 import com.example.idnp_sunshield.Fragments.Forecast;
 import com.example.idnp_sunshield.Fragments.Health;
+import com.example.idnp_sunshield.Fragments.Location;
 import com.example.idnp_sunshield.Fragments.UV_index;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.health) {
                 replaceFragment(new Health());
             } else if (item.getItemId() == R.id.alerts) {
-                replaceFragment(new Alerts());
+                //replaceFragment(new Alerts());
+                replaceFragment(new Location());
             }
             // Indicate that the item selection has been handled
             return true;

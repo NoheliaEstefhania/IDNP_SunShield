@@ -14,9 +14,9 @@
 
         <TextView
             android:id="@+id/showCountry"
-            android:layout_width="322dp"
-            android:layout_height="302dp"
-            android:text="@string/hello_blank_fragment"
+            android:layout_width="158dp"
+            android:layout_height="83dp"
+            android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
