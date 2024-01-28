@@ -57,7 +57,6 @@ public class BarChartView extends View {
             float spacing = 5;
             float xAxisOffset = 40;
             float yAxisOffset = 30;
-
             // Iterate over the daily data to draw the bars and legends
             for (int i = 0; i < dailyList.size(); i++) {
                 daily data = dailyList.get(i);
@@ -65,7 +64,6 @@ public class BarChartView extends View {
                 float top = getHeight() - getUvHeight(data.getUvi()) - xAxisOffset;
                 float right = left + barWidth - 2 * spacing - 30;
                 float bottom = getHeight() - xAxisOffset;
-
                 // Set the color of the bar based on the UV index
                 paint.setColor(getColorForUvIndex(data.getUvi()));
                 // Draw the bar on the canvas
@@ -76,7 +74,6 @@ public class BarChartView extends View {
                 //canvas.drawText(date(data.getDt()), left, getHeight() - 10, paint);
                 canvas.drawText(date(data.getDt()), left, getHeight() + 40 - xAxisOffset, paint); // Ajusta el valor "20" según tus necesidades
             }
-
             // Draw the legend and lines on the Y-axis
             paint.setColor(Color.BLACK);
             paint.setTextSize(40);
@@ -94,9 +91,6 @@ public class BarChartView extends View {
     private void drawYAxisLabelAndLine(Canvas canvas, String text, float y) {
         // Draw the label text at the specified position
         canvas.drawText(text, 20, y, paint);
-
-        // Set the thickness of the line to be drawn next
-        //paint.setStrokeWidth(2);
 
         // Draw a horizontal line on the Y-axis, from the left end to the right end of the canvas
         canvas.drawLine(0, y, getWidth(), y, paint);
