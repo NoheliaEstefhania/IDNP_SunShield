@@ -109,7 +109,7 @@ public class BarChartView extends View {
         if (uvIndex <= 2) {
             return Color.parseColor("#08A3E2");
         } else if (uvIndex <= 5) {
-            return Color.parseColor("800080"); //purple
+            return Color.parseColor("#800080"); //purple
         } else if (uvIndex <= 7) {
             return Color.RED;
         } else if (uvIndex <= 10) {
