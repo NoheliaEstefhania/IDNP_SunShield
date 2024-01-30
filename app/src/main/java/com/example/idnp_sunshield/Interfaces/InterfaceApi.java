@@ -2,9 +2,8 @@ package com.example.idnp_sunshield.Interfaces;
 
 import retrofit2.Call;
 
+import com.example.idnp_sunshield.Models.LocationsData;
 import com.example.idnp_sunshield.Models.UVData;
-import com.example.idnp_sunshield.Models.lat;
-import com.example.idnp_sunshield.Models.lon;
 
 import java.util.List;
 
@@ -23,15 +22,7 @@ public interface InterfaceApi {
     );
 
     @GET("geo/1.0/direct")
-    Call<List<lat>> getLat(
-            // Define parameters for the API call
-            @Query("q") String q,         // Latitude
-            @Query("limit") int limit,
-            @Query("appid") String APIKEY      // API key for authenticatio
-    );
-
-    @GET("geo/1.0/direct")
-    Call<List<lon>> getLon(
+    Call<List<LocationsData>> getLocationData(
             // Define parameters for the API call
             @Query("q") String q,         // Latitude
             @Query("limit") int limit,
