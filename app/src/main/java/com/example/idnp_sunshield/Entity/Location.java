@@ -12,9 +12,12 @@ public class Location {
     private double longitude;
     @ColumnInfo(name = "latitude")
     private double latitude;
-    public Location(double longitude, double latitude){
+    @ColumnInfo(name = "title")
+    private String title;
+    public Location(double longitude, double latitude, String title){
         this.latitude = latitude;
         this.longitude = longitude;
+        this.title = title;
     }
     public int getId() {
         return id;
@@ -28,10 +31,16 @@ public class Location {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+    public void setTitle(String title) {
+        this.title = title;
+    }
     public double getLongitude(){
         return this.longitude;
     }
     public double getLatitude(){
         return this.latitude;
+    }
+    public String getTitle(){
+        return this.title;
     }
 }
