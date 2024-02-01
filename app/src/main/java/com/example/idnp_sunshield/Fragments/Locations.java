@@ -1,5 +1,6 @@
 package com.example.idnp_sunshield.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import com.example.idnp_sunshield.Entity.DataBase;
 import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.LocationsData;
+import com.example.idnp_sunshield.Services.DataUpdateService;
 import com.example.idnp_sunshield.databinding.FragmentLocationBinding;
 
 import java.util.List;
@@ -159,7 +161,7 @@ public class Locations extends Fragment {
                 getActivity().getApplicationContext(),
                 DataBase.class,
                 "dbPruebas"
-        ).allowMainThreadQueries().build();
+        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
 
         double latitud = getLatitud();
         double longitud = getLongitud();
@@ -201,9 +203,18 @@ public class Locations extends Fragment {
         //binding.showCountry.setText(!locationsList.isEmpty() ? (locationsList.get(0).getLatitude() + locationsList.get(0).getLongitude() + "") : "");
         binding.showCountry.setText(locationsList.get(0).getLatitude() + " "+ locationsList.get(0).getLongitude() + " ");
 
-        /*for (int i = 0; i < locationsList.toArray().length; i++) {
+        // Inicia el servicio y envía datos a través de un Intent
+        Intent serviceIntent = new Intent(getActivity(), DataUpdateService.class);
+        System.out.println("SERVICE latitude: " + locationsList.get(0).getLatitude());
+        System.out.println("SERVICE longitude: " + locationsList.get(0).getLongitude());
+
+        serviceIntent.putExtra("latitude", locationsList.get(0).getLatitude());
+        serviceIntent.putExtra("longitude", locationsList.get(0).getLongitude());
+        getActivity().startService(serviceIntent);
+
+        for (int i = 0; i < locationsList.toArray().length; i++) {
             dataBase.getLocationDAO().deleteLocation(locationsList.get(i));
-        }*/
+        }
         System.out.println("Cantidad de valores de locationsList después: " + locationsList.size());
     }
 

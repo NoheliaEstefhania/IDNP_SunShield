@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the activity content to the root of the inflated layout
         setContentView(binding.getRoot());
 
-        startBackgroundService();
+        //startBackgroundService();
 
 
         // Replace the content of the fragment container with the UV_index fragment when the activity starts
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.health) {
                 replaceFragment(new Health());
             } else if (item.getItemId() == R.id.alerts) {
-                //replaceFragment(new Alerts());
-                replaceFragment(new Locations());
+                replaceFragment(new Alerts());
+                //replaceFragment(new Locations());
             }
             // Indicate that the item selection has been handled
             return true;

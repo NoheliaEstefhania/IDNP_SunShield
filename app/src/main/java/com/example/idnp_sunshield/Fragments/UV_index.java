@@ -138,23 +138,27 @@ public class UV_index extends Fragment {
             // Required empty public constructor
         }
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
         // TODO: Rename and change types and number of parameters
-        public static DetailFragment newInstance(String param1, String param2) {
+        /*public static DetailFragment newInstance(String param1, String param2) {
             DetailFragment fragment = new DetailFragment();
             Bundle args = new Bundle();
             args.putString(ARG_PARAM1, param1);
             args.putString(ARG_PARAM2, param2);
             fragment.setArguments(args);
             return fragment;
+        }*/
+
+        // En la clase DetailFragment de UV_index
+        public static DetailFragment newInstance(String name, String description, byte[] image) {
+            DetailFragment fragment = new DetailFragment();
+            Bundle args = new Bundle();
+            args.putString(ARG_PARAM1, name);
+            args.putString(ARG_PARAM2, description);
+            args.putByteArray(ARG_IMAGE_RESOURCE, image);  // Utiliza putByteArray para pasar un array de bytes
+            fragment.setArguments(args);
+            return fragment;
         }
+
 
         @Override
         public void onCreate(Bundle savedInstanceState) {

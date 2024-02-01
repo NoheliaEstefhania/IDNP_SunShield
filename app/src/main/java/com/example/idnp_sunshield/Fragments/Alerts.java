@@ -57,7 +57,7 @@ public class Alerts extends Fragment {
     }
 
     // Method to load and display data in the fragment
-    private void data(){
+    /*private void data(){
         // List to store illnesses retrieved from the database
         List<Illness> illnessList;
 
@@ -66,7 +66,8 @@ public class Alerts extends Fragment {
                 getActivity().getApplicationContext(),
                 DataBase.class,
                 "dbPruebas"
-        ).allowMainThreadQueries().build();
+        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
+
 
         // Dummy data: byte array representing an image (replace with actual image data)
         byte[] photos = {(byte) R.drawable.img_disease01};
@@ -90,5 +91,93 @@ public class Alerts extends Fragment {
 
         // Display the image in the ImageView
         binding.imageView.setImageBitmap(bitmap);
+    }*/
+    /*private void data() {
+        // List to store illnesses retrieved from the database
+        List<Illness> illnessList;
+
+        // Create or open the Room database
+        DataBase dataBase = Room.databaseBuilder(
+                getActivity().getApplicationContext(),
+                DataBase.class,
+                "dbPruebas"
+        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
+
+        // Obtén el ID del recurso de la imagen desde el directorio drawable
+        int drawableResourceId = R.drawable.img_disease01;
+
+        // Crea una Illness con la imagen del directorio drawable
+        Illness newIllness = new Illness("In process", "In process", getDrawableAsByteArray(drawableResourceId));
+
+        // Añade la Illness a la base de datos
+        dataBase.getIllnessDAO().addIllness(newIllness);
+
+        // Recupera todas las enfermedades de la base de datos
+        illnessList = dataBase.getIllnessDAO().getAllIllnesses();
+
+        // Muestra el título de la primera enfermedad en el TextView
+        binding.alertTextView.setText(illnessList.get(0).getTitle());
+
+        // Muestra la imagen en el ImageView
+        binding.imageView.setImage(illnessList.get(0).getImage());
+    }*/
+
+    private void data() {
+        // Create or open the Room database
+        DataBase dataBase = Room.databaseBuilder(
+                getActivity().getApplicationContext(),
+                DataBase.class,
+                "dbPruebas"
+        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
+
+        // Dummy data: byte array representing an image (replace with actual image data)
+        byte[] photos = {(byte) R.drawable.img_disease01};
+
+        // Load the image into a Bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_disease02);
+
+        // Convert the Bitmap to a byte array
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        // Add a new illness with the image to the database
+        Illness newIllness = new Illness("New Illness", "Description", byteArray);
+        dataBase.getIllnessDAO().addIllness(newIllness);
+
+        // Retrieve all illnesses from the database
+        List<Illness> illnessList = dataBase.getIllnessDAO().getAllIllnesses();
+
+        // Verifica si hay alguna enfermedad en la lista
+        if (!illnessList.isEmpty()) {
+            // Recupera la primera enfermedad (puedes ajustar esto según tus necesidades)
+            Illness firstIllness = illnessList.get(0);
+
+            // Convierte el array de bytes de la imagen en un Bitmap
+            Bitmap firstIllnessBitmap = BitmapFactory.decodeByteArray(firstIllness.getImage(), 0, firstIllness.getImage().length);
+
+            // Muestra el título de la primera enfermedad en el TextView
+            binding.alertTextView.setText(firstIllness.getTitle());
+
+            // Muestra la imagen de la primera enfermedad en el ImageView
+            binding.imageView.setImageBitmap(firstIllnessBitmap);
+        } else {
+            // Manejar el caso en el que no hay ninguna enfermedad en la base de datos
+        }
+
+        System.out.println("Eliminacion");
+        for (int i = 0; i < illnessList.toArray().length; i++) {
+            dataBase.getIllnessDAO().deleteIllness(illnessList.get(i));
+        }
     }
+
+
+    // Método para convertir un recurso drawable en un array de bytes
+    private byte[] getDrawableAsByteArray(int drawableResourceId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableResourceId);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
 }
