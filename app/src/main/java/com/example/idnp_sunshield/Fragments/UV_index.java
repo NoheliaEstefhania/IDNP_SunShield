@@ -1,6 +1,10 @@
 package com.example.idnp_sunshield.Fragments;
 
 import static android.icu.text.MessagePattern.Part.Type.ARG_NAME;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +18,8 @@ import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
+
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -116,44 +122,29 @@ public class UV_index extends Fragment {
     }
 
 
-    /**
-     * A simple {@link Fragment} subclass.
-     * Use the {@link DetailFragment#newInstance} factory method to
-     * create an instance of this fragment.
-     */
+
     public static class DetailFragment extends Fragment {
 
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private static final String ARG_PARAM1 = "param1";
-        private static final String ARG_PARAM2 = "param2";
-        private static final String ARG_DESCRIPTION = "aaaaa";
-        private static final String ARG_IMAGE_RESOURCE = "";
+        private static final String ARG_NAME = "param_name";
+        private static final String ARG_DESCRIPTION = "param_description";
+        private static final String ARG_IMAGE_RESOURCE = "param_image";
 
-        // TODO: Rename and change types of parameters
-        private String mParam1;
-        private String mParam2;
-
+        private String name;
+        private String description;
+        private byte[] image;
         public DetailFragment() {
             // Required empty public constructor
         }
 
         // TODO: Rename and change types and number of parameters
-        /*public static DetailFragment newInstance(String param1, String param2) {
-            DetailFragment fragment = new DetailFragment();
-            Bundle args = new Bundle();
-            args.putString(ARG_PARAM1, param1);
-            args.putString(ARG_PARAM2, param2);
-            fragment.setArguments(args);
-            return fragment;
-        }*/
-
         // En la clase DetailFragment de UV_index
         public static DetailFragment newInstance(String name, String description, byte[] image) {
             DetailFragment fragment = new DetailFragment();
             Bundle args = new Bundle();
-            args.putString(ARG_PARAM1, name);
-            args.putString(ARG_PARAM2, description);
+            args.putString(ARG_NAME, name);
+            args.putString(ARG_DESCRIPTION, description);
             args.putByteArray(ARG_IMAGE_RESOURCE, image);  // Utiliza putByteArray para pasar un array de bytes
             fragment.setArguments(args);
             return fragment;
@@ -165,8 +156,9 @@ public class UV_index extends Fragment {
             super.onCreate(savedInstanceState);
             // Retrieve arguments passed to the fragment
             if (getArguments() != null) {
-                mParam1 = getArguments().getString(ARG_PARAM1);
-                mParam2 = getArguments().getString(ARG_PARAM2);
+                name = getArguments().getString(ARG_NAME);
+                description = getArguments().getString(ARG_DESCRIPTION);
+                image = getArguments().getByteArray(ARG_IMAGE_RESOURCE);
             }
         }
 
@@ -175,20 +167,16 @@ public class UV_index extends Fragment {
             // Inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-            // Retrieve data from the Bundle
-            String name = getArguments().getString(String.valueOf(ARG_NAME));
-            String description = getArguments().getString(ARG_DESCRIPTION);
-            int imageResource = getArguments().getInt(ARG_IMAGE_RESOURCE);
-
-            // Find views in the layout
             TextView textViewTitle = view.findViewById(R.id.textView_item_title);
             TextView textViewDescription = view.findViewById(R.id.textView_item_details);
             ImageView imageView = view.findViewById(R.id.imageView_item);
 
-            // Set data to the views
             textViewTitle.setText(name);
             textViewDescription.setText(description);
-            imageView.setImageResource(imageResource);
+
+            // Convertir el array de bytes a un Bitmap y establecerlo en el ImageView
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            imageView.setImageBitmap(bitmap);
 
             return view;
         }
@@ -197,11 +185,24 @@ public class UV_index extends Fragment {
         public static DetailFragment newInstance(String name, String description, int imageResource) {
             DetailFragment fragment = new DetailFragment();
             Bundle args = new Bundle();
-            args.putString(String.valueOf(ARG_NAME), name);
+            args.putString(ARG_NAME, name);
             args.putString(ARG_DESCRIPTION, description);
-            args.putInt(ARG_IMAGE_RESOURCE, imageResource);
+            // Puedes convertir el recurso de imagen a bytes si lo necesitas
+            args.putByteArray(ARG_IMAGE_RESOURCE, convertImageResourceToByteArray(imageResource));
             fragment.setArguments(args);
             return fragment;
         }
+
+        private static byte[] convertImageResourceToByteArray(int imageResource) {
+            // Aquí puedes implementar la conversión de un recurso de imagen a un array de bytes
+            // Por ejemplo, puedes usar BitmapFactory para decodificar el recurso a un Bitmap
+            // y luego convertir el Bitmap a un array de bytes
+            // Este código es solo un ejemplo y puedes ajustarlo según tus necesidades
+            Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), imageResource);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        }
+
     }
 }
