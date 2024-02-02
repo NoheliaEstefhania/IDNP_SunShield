@@ -15,7 +15,6 @@ import com.example.idnp_sunshield.Entity.DataBase;
 import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.LocationsData;
-import com.example.idnp_sunshield.Services.DataUpdateService;
 import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.databinding.FragmentLocationBinding;
 
@@ -205,13 +204,8 @@ public class Locations extends Fragment {
         binding.showCountry.setText(locationsList.get(0).getLatitude() + " "+ locationsList.get(0).getLongitude() + " ");
 
         // Inicia el servicio y envía datos a través de un Intent
-        Intent serviceIntent = new Intent(getActivity(), DataUpdateService.class);
         System.out.println("SERVICE latitude: " + locationsList.get(0).getLatitude());
         System.out.println("SERVICE longitude: " + locationsList.get(0).getLongitude());
-
-        serviceIntent.putExtra("latitude", locationsList.get(0).getLatitude());
-        serviceIntent.putExtra("longitude", locationsList.get(0).getLongitude());
-        getActivity().startService(serviceIntent);
 
         LocationSingleton locationSingleton = LocationSingleton.getInstance();
         Location nuevaUbicacion = new Location(locationsList.get(0).getLongitude(), locationsList.get(0).getLatitude(), locationsList.get(0).getTitle());
