@@ -26,77 +26,28 @@ import java.util.List;
 
 public class Health extends Fragment {
 
-    // Sample data for diseases
-    String[] names = {"Skin Cancer", "Sunburn", "Cataracts", "Pterygium","Immunosuppression", "Age-Related Macular Degeneration (ARMD)"};
-    String[] descriptions = {"UV radiation is a risk factor for several types of skin cancer.",
-            "Sunburns are an acute response to excessive exposure to UV rays.",
-            "It is estimated that 10% of cataract cases, an eye disease that can cause blindness.",
-            "It is a fleshy growth that can cover part of the cornea.",
-            "This is an eye disease that can worsen with exposure to UV radiation",
-            "Overexposure to UV radiation can suppress the functioning of the body’s immune system."
-    };
-    int[] photos = {R.drawable.img_disease01, R.drawable.img_disease03, R.drawable.img_disease06, R.drawable.img_disease05, R.drawable.img_disease02, R.drawable.img_disease04};
-
     RecyclerView rv1;
 
-    /*@Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_health, container, false);
-
         // Initialize RecyclerView
         rv1 = view.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rv1.setLayoutManager(linearLayoutManager);
-        rv1.setAdapter(new AdapterDisease());
 
-        return view;
-    }*/
-
-/*    @SuppressLint("WrongThread")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_health, container, false);
-
-        // Crear o abrir la base de datos Room
-        DataBase dataBase = Room.databaseBuilder(
-                getActivity().getApplicationContext(),
-                DataBase.class,
-                "dbPruebas"
-        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
-
-        // Obtener la lista actual de enfermedades en la base de datos
-        List<Illness> currentIllnesses = dataBase.getIllnessDAO().getAllIllnesses();
-
-        // Si la lista actual está vacía, entonces agregar enfermedades de los arreglos
-        if (currentIllnesses.isEmpty()) {
-            // Agregar enfermedades a la base de datos
-            for (int i = 0; i < names.length; i++) {
-                // Obtener el ID del recurso de la imagen
-                int imageResource = photos[i];
-
-                // Convertir el recurso de imagen a un byte array
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResource);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-
-                // Crear una nueva enfermedad y agregarla a la base de datos
-                Illness illness = new Illness(names[i], descriptions[i], byteArray);
-                dataBase.getIllnessDAO().addIllness(illness);
-            }
+        // Verificar y agregar información a la base de datos si es necesario
+        checkAndAddDataToDatabase();
+        List<Illness> illnessList = getIllnessesFromDatabase();
+        System.out.println("BEFORE onCreateView");
+        for (Illness ill: illnessList) {
+            System.out.println("Contenido ILLNESS: " + ill.getTitle());
         }
-
-        // Inicializar RecyclerView con la lista de enfermedades actualizada
-        rv1 = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rv1.setLayoutManager(linearLayoutManager);
-        rv1.setAdapter(new AdapterDisease(currentIllnesses));
-
+        rv1.setAdapter(new AdapterDisease(illnessList));
         return view;
-    }*/
+    }
 
     private List<Illness> getIllnessesFromDatabase() {
         // Create or open the Room database
@@ -110,24 +61,6 @@ public class Health extends Fragment {
         return dataBase.getIllnessDAO().getAllIllnesses();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_health, container, false);
-
-        // Inicializar RecyclerView
-        rv1 = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rv1.setLayoutManager(linearLayoutManager);
-        List<Illness> illnessList = getIllnessesFromDatabase();
-
-        rv1.setAdapter(new AdapterDisease(illnessList));
-
-        // Verificar y agregar información a la base de datos si es necesario
-        checkAndAddDataToDatabase();
-
-        return view;
-    }
-
     private void checkAndAddDataToDatabase() {
         DataBase dataBase = Room.databaseBuilder(
                 getActivity().getApplicationContext(),
@@ -138,11 +71,15 @@ public class Health extends Fragment {
         // Verificar si ya hay información en la base de datos
         List<Illness> existingIllnesses = dataBase.getIllnessDAO().getAllIllnesses();
 
+        for (Illness ill: existingIllnesses) {
+            System.out.println("Contenido ILLNESS: " + ill.getTitle());
+        }
         System.out.println("valor de existingIllnesses.isEmpty() " + existingIllnesses.isEmpty());
-        if (existingIllnesses.isEmpty()) {
+        /*if (existingIllnesses.isEmpty()) {
             // La base de datos está vacía, así que agregamos la información
             addDataToDatabase(dataBase);
-        }
+        }*/
+        addDataToDatabase(dataBase);
     }
 
     private void addDataToDatabase(DataBase dataBase) {
@@ -164,6 +101,8 @@ public class Health extends Fragment {
 
             boolean illnessExists = false;
             for (Illness existingIllness : existingIllnesses) {
+                System.out.println("HealthFragment "+ "Existing illness title: " + existingIllness.getTitle());
+                System.out.println("HealthFragment "+ "New illness title: " + names[i]);
                 if (existingIllness.getTitle().equals(names[i])) {
                     illnessExists = true;
                     break;
@@ -204,22 +143,11 @@ public class Health extends Fragment {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
             return new AdapterDiseaseHolder(view);
         }
-/*        @NonNull
-        @Override
-        public AdapterDiseaseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Inflate the layout for each item in the RecyclerView
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
-            return new AdapterDiseaseHolder(view);
-        }*/
 
         @Override
         public int getItemCount() {
             return illnessList.size();
         }
-        /*@Override
-        public int getItemCount() {
-            return names.length;
-        }*/
 
         @Override
         public void onBindViewHolder(@NonNull AdapterDiseaseHolder holder, int position) {
@@ -232,28 +160,6 @@ public class Health extends Fragment {
         private class AdapterDiseaseHolder extends RecyclerView.ViewHolder {
             TextView tv1, tv2;
             ImageView iv1;
-
-/*            public AdapterDiseaseHolder(@NonNull View itemView) {
-                super(itemView);
-                // Initialize views
-                iv1 = itemView.findViewById(R.id.imageView_disease);
-                tv1 = itemView.findViewById(R.id.textView_name);
-                tv2 = itemView.findViewById(R.id.textView_description);
-
-                // Add an OnClickListener to the ImageView
-                iv1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create a new instance of your detail fragment
-                        UV_index.DetailFragment detailFragment = UV_index.DetailFragment.newInstance(names[getBindingAdapterPosition()], descriptions[getBindingAdapterPosition()], photos[getBindingAdapterPosition()]);
-                        // Replace the current fragment with the new detail fragment
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_container, detailFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                    }
-                });
-            }*/
 
             public AdapterDiseaseHolder(@NonNull View itemView) {
                 super(itemView);
@@ -284,17 +190,11 @@ public class Health extends Fragment {
             // Bind data to the views
             public void bindData(int position) {
                 Illness illness = illnessList.get(position);
-
+                System.out.println("BINDDATA ILLNESS: " + illness.getTitle());
                 iv1.setImageBitmap(BitmapFactory.decodeByteArray(illnessList.get(position).getImage(), 0, illnessList.get(position).getImage().length));
                 tv1.setText(illnessList.get(position).getTitle());
                 tv2.setText(illnessList.get(position).getDescription());
             }
-            // Bind data to the views
-            /*public void bindData(int position) {
-                iv1.setImageResource(photos[position]);
-                tv1.setText(names[position]);
-                tv2.setText(descriptions[position]);
-            }*/
         }
     }
 }
