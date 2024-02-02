@@ -1,16 +1,11 @@
 package com.example.idnp_sunshield.Fragments;
 
-import android.content.IntentFilter;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.idnp_sunshield.Entity.Location;
-import com.example.idnp_sunshield.Services.DataUpdateReceiver;
 import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.Views.BarChartView;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
@@ -27,19 +22,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Forecast extends Fragment implements DataUpdateReceiver.DataUpdateListener {
+public class Forecast extends Fragment  {
 
     FragmentForecastBinding binding;
     private BarChartView barChartView;
-    private DataUpdateReceiver dataUpdateReceiver;
-
     // Default constructor
     public Forecast() {
         // Required empty public constructor
     }
 
     // Factory method to create a new instance of the Forecast fragment
-    public static Forecast newInstance(String param1, String param2) {
+    public static Forecast newInstance() {
         Forecast fragment = new Forecast();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -58,15 +51,6 @@ public class Forecast extends Fragment implements DataUpdateReceiver.DataUpdateL
         // Inflate the layout for this fragment using data binding
         binding = FragmentForecastBinding.inflate(inflater, container, false);
         barChartView = binding.barChartView;
-/*        // Registra el BroadcastReceiver en el método onCreate o en onResume
-        dataUpdateReceiver = new DataUpdateReceiver(this);
-        IntentFilter intentFilter = new IntentFilter("DataUpdate");
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(dataUpdateReceiver, intentFilter);*/
-
-        // Registra el BroadcastReceiver en el método onCreate o en onResume
-        dataUpdateReceiver = new DataUpdateReceiver(this);
-        IntentFilter intentFilter = new IntentFilter("DataUpdate");
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(dataUpdateReceiver, intentFilter);
         // Fetch weather data
         fetchWeather();
         return binding.getRoot();
@@ -127,11 +111,5 @@ public class Forecast extends Fragment implements DataUpdateReceiver.DataUpdateL
         String formattedDate = sdf.format(time);
         System.out.println("date: " + formattedDate);
         return formattedDate;
-    }
-
-    @Override
-    public void onDataUpdate(double latitude, double longitude) {
-        System.out.println("Respuesta desde forecast en onDataUpdate");
-        binding.forecastTitle.setText("Valores recibidos : latitud: "+ latitude +" longitude: "+ longitude);
     }
 }
