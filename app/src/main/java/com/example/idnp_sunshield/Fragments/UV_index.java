@@ -12,11 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
 import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.R;
+import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -67,8 +70,12 @@ public class UV_index extends Fragment {
 
         // Create an instance of the InterfaceApi using the Retrofit instance
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
+        LocationSingleton locationSingleton = LocationSingleton.getInstance();
+        Location ubicacion = locationSingleton.getLocation();
 
+        System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
         // Make an asynchronous call to get UV data from OpenWeatherMap API
+
         Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
             @Override

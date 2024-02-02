@@ -16,6 +16,7 @@ import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.LocationsData;
 import com.example.idnp_sunshield.Services.DataUpdateService;
+import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.databinding.FragmentLocationBinding;
 
 import java.util.List;
@@ -211,6 +212,10 @@ public class Locations extends Fragment {
         serviceIntent.putExtra("latitude", locationsList.get(0).getLatitude());
         serviceIntent.putExtra("longitude", locationsList.get(0).getLongitude());
         getActivity().startService(serviceIntent);
+
+        LocationSingleton locationSingleton = LocationSingleton.getInstance();
+        Location nuevaUbicacion = new Location(locationsList.get(0).getLongitude(), locationsList.get(0).getLatitude(), locationsList.get(0).getTitle());
+        locationSingleton.setLocation(nuevaUbicacion);
 
         for (int i = 0; i < locationsList.toArray().length; i++) {
             dataBase.getLocationDAO().deleteLocation(locationsList.get(i));

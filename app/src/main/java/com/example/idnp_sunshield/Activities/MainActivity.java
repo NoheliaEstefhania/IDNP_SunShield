@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Replace the content of the fragment container with the UV_index fragment when the activity starts
-        replaceFragment(new UV_index());
+        //replaceFragment(new UV_index());
+        replaceFragment(new Locations());
 
         // Set up the listener for item selection in the bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {

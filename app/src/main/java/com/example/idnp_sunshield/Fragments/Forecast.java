@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.Services.DataUpdateReceiver;
+import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.Views.BarChartView;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
@@ -79,9 +81,14 @@ public class Forecast extends Fragment implements DataUpdateReceiver.DataUpdateL
 
         System.out.println("retrofit: " + retrofit);
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
+        LocationSingleton locationSingleton = LocationSingleton.getInstance();
+        Location ubicacion = locationSingleton.getLocation();
 
+        System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
         // Make an asynchronous API call to get weather data
-        Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
+        Call<UVData> call = interfaceApi.getData(ubicacion.getLatitude(), ubicacion.getLongitude(), "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
+
+        //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
             @Override
             public void onResponse(Call<UVData> call, Response<UVData> response) {
