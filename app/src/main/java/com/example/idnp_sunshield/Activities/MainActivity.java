@@ -12,6 +12,7 @@ import com.example.idnp_sunshield.Fragments.Locations;
 import com.example.idnp_sunshield.Fragments.UV_index;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.Services.BackgroundService;
+import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
 import android.content.Intent;
 
@@ -33,9 +34,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Replace the content of the fragment container with the UV_index fragment when the activity starts
-        //replaceFragment(new UV_index());
-        replaceFragment(new Locations());
 
+        //replaceFragment(new UV_index());
+        //replaceFragment(new Locations());
+
+        // Crear una instancia de LocationPreferences
+        LocationPreferences locationPreferences = new LocationPreferences(getApplicationContext());
+        locationPreferences.clear();
+
+        System.out.println("BOOLEAN MAIN "+locationPreferences.hasLocationData());
+        // Verificar si hay datos en SharedPreferences
+        if (locationPreferences.hasLocationData()) {
+            // Si hay datos, iniciar el UV_index fragment
+            replaceFragment(new UV_index());
+        } else {
+            // Si no hay datos, iniciar el Locations fragment
+            replaceFragment(new Locations());
+        }
         // Set up the listener for item selection in the bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             // Determine which item in the navigation bar has been selected and replace the corresponding fragment

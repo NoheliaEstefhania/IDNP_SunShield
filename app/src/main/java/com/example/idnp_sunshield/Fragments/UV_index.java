@@ -2,6 +2,7 @@ package com.example.idnp_sunshield.Fragments;
 
 import static android.icu.text.MessagePattern.Part.Type.ARG_NAME;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import com.example.idnp_sunshield.Models.UVData;
 import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.R;
+import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
@@ -72,11 +74,22 @@ public class UV_index extends Fragment {
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
         LocationSingleton locationSingleton = LocationSingleton.getInstance();
         Location ubicacion = locationSingleton.getLocation();
+        Context context = requireContext();
 
-        System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
+        LocationPreferences locationPreferences = new LocationPreferences(requireContext());
+        System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getTitle());
+
+        //System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
+
+        //System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
         // Make an asynchronous call to get UV data from OpenWeatherMap API
+        System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLatitude());
+        System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLongitude());
 
-        Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
+
+        Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,daily", "c71298943776351e81c2f4e84456a36d");
+
+        //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
             @Override
             public void onResponse(Call<UVData> call, Response<UVData> response) {

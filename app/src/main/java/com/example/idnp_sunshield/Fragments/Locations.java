@@ -17,6 +17,7 @@ import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.LocationsData;
 import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.databinding.FragmentLocationBinding;
+import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -210,6 +212,19 @@ public class Locations extends Fragment {
         LocationSingleton locationSingleton = LocationSingleton.getInstance();
         Location nuevaUbicacion = new Location(locationsList.get(0).getLongitude(), locationsList.get(0).getLatitude(), locationsList.get(0).getTitle());
         locationSingleton.setLocation(nuevaUbicacion);
+
+
+        // Obtener la instancia de LocationPreferences
+        LocationPreferences locationPreferences = new LocationPreferences(requireContext());
+
+        // Establecer la información de ubicación
+        double latitude = locationsList.get(0).getLatitude();  // Reemplaza con la latitud real
+        double longitude = locationsList.get(0).getLongitude();  // Reemplaza con la longitud real
+        String title = locationsList.get(0).getTitle();  // Reemplaza con el título real
+
+        locationPreferences.saveLocation(longitude, latitude , title);
+
+
 
         for (int i = 0; i < locationsList.toArray().length; i++) {
             dataBase.getLocationDAO().deleteLocation(locationsList.get(i));
