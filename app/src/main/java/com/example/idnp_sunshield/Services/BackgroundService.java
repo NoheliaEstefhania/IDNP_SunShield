@@ -10,6 +10,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -32,18 +33,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 public class BackgroundService extends Service {
 
+    private final IBinder binder = new LocalBinder();
     private Handler handler;
     //private final int delay = 60000; // 1 minuto (ajusta según sea necesario)
     private final int delay = 15000; // 1 minuto (ajusta según sea necesario)
-
     private double lastUviValue = 0;
     private int notificationCount = 0; // Nuevo contador
+    public static final String ACTION_UVI_UPDATE = "com.example.idnp_sunshield.ACTION_UVI_UPDATE";
+
+
+    public class LocalBinder extends Binder {
+        public BackgroundService getService() {
+            return BackgroundService.this;
+        }
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,18 +65,27 @@ public class BackgroundService extends Service {
                 // Obtener el valor actual del índice UV
                 fetchUviValue();
 
-                // Realizar la lógica de servicio según el valor actualizado
+               /* // Realizar la lógica de servicio según el valor actualizado
                 if (lastUviValue > 0.1) {
                     notificationCount++; // Incrementa el contador
 
-                    showNotification("¡Alerta de UV!", "El índice UV Protégete del sol. " + lastUviValue + " - Noti: " + notificationCount);
-                }
+                    //showNotification("¡Alerta de UV!", "El índice UV Protégete del sol. " + lastUviValue + " - Noti: " + notificationCount);
+                    sendUviUpdateBroadcast();
+                }*/
 
                 handler.postDelayed(this, delay);
             }
         }, delay);
     }
 
+    private void sendUviUpdateBroadcast() {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_UVI_UPDATE);
+        intent.putExtra("UVI_VALUE", lastUviValue);
+
+        // Envía la transmisión (Broadcast)
+        sendBroadcast(intent);
+    }
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -108,6 +125,7 @@ public class BackgroundService extends Service {
                     UVData uvData = response.body();
                     current tc = uvData.getCurrent();
 
+                    sendUviUpdateBroadcast();
                     // Actualizar lastUviValue con el valor obtenido
                     lastUviValue = tc.getUvi();
                 }
@@ -166,5 +184,7 @@ public class BackgroundService extends Service {
         stopSelf();
         super.onDestroy();
     }
+
+
 }
 
