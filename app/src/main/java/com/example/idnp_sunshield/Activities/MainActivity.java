@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the activity content to the root of the inflated layout
         setContentView(binding.getRoot());
 
-        //startBackgroundService();
+        startBackgroundService();
 
 
         // Replace the content of the fragment container with the UV_index fragment when the activity starts
