@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Se especifica que la aplicación requiere el permiso de acceso a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Definición de la aplicación -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -28,6 +29,9 @@
         </activity>
         <service
             android:name=".Services.BackgroundService"
+            android:exported="false" />
+        <service
+            android:name=".Services.ForegroundService"
             android:exported="false" />
     </application>
 </manifest>
