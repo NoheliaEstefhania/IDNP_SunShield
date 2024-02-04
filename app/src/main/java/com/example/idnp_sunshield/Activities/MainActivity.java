@@ -1,6 +1,7 @@
 package com.example.idnp_sunshield.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import com.example.idnp_sunshield.Fragments.Locations;
 import com.example.idnp_sunshield.Fragments.UV_index;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.Services.BackgroundService;
+import com.example.idnp_sunshield.Services.ForegroundService;
 import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.databinding.ActivityMainBinding;
 import android.content.Intent;
@@ -37,8 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         //replaceFragment(new UV_index());
         //replaceFragment(new Locations());
-
         // Crear una instancia de LocationPreferences
+
+        // Inicia el servicio en primer plano
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        serviceIntent.putExtra("inputExtra", "Estoy ejecutando un servicio en primer plano");
+        ContextCompat.startForegroundService(this, serviceIntent);
+
         LocationPreferences locationPreferences = new LocationPreferences(getApplicationContext());
         locationPreferences.clear();
 
@@ -86,5 +93,26 @@ public class MainActivity extends AppCompatActivity {
 
         // Confirm the transaction
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Detén el servicio en primer plano cuando la aplicación está en uso
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        stopService(serviceIntent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (!isChangingConfigurations()) {
+            // Inicia el servicio en primer plano cuando la aplicación no está en uso
+            Intent serviceIntent = new Intent(this, ForegroundService.class);
+            serviceIntent.putExtra("inputExtra", "La aplicación no está en uso, iniciando el servicio en primer plano");
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
     }
 }
