@@ -2,7 +2,10 @@ package com.example.idnp_sunshield.Fragments;
 
 import static android.icu.text.MessagePattern.Part.Type.ARG_NAME;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,13 +56,37 @@ public class UV_index extends Fragment {
         binding = FragmentUVIndexBinding.inflate(getLayoutInflater());
     }
 
+    // Dentro de la clase UV_index, registra el Broadcast Receiver
+    private BroadcastReceiver uviUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != null && intent.getAction().equals("com.example.idnp_sunshield.ACTION_UVI_UPDATE")) {
+                double uviValue = intent.getDoubleExtra("UVI_VALUE", 0.0);
+                System.out.println("SERVICE BACKGROUND Índice UV actualizado: " + uviValue);
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment using the binding object
         binding = FragmentUVIndexBinding.inflate(inflater, container, false);
+        // Registra el Broadcast Receiver
+        System.out.println("ANTES DE ON RECEIVE BROADCAST");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.example.idnp_sunshield.ACTION_UVI_UPDATE");
+        requireActivity().registerReceiver(uviUpdateReceiver, intentFilter);
+
         // Fetch weather data and update UI components
         fetchWeather();
         return binding.getRoot();
+    }
+
+    // En el método onDestroyView, desregistra el Broadcast Receiver
+    @Override
+    public void onDestroyView() {
+        requireActivity().unregisterReceiver(uviUpdateReceiver);
+        super.onDestroyView();
     }
 
     // Fetches weather data using Retrofit and OpenWeatherMap API
@@ -72,16 +99,11 @@ public class UV_index extends Fragment {
 
         // Create an instance of the InterfaceApi using the Retrofit instance
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
-        LocationSingleton locationSingleton = LocationSingleton.getInstance();
-        Location ubicacion = locationSingleton.getLocation();
+        //LocationSingleton locationSingleton = LocationSingleton.getInstance();
         Context context = requireContext();
 
         LocationPreferences locationPreferences = new LocationPreferences(requireContext());
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getTitle());
-
-        //System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
-
-        //System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
         // Make an asynchronous call to get UV data from OpenWeatherMap API
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLatitude());
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLongitude());
