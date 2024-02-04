@@ -24,7 +24,6 @@ import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
-import com.example.idnp_sunshield.Singleton.LocationSingleton;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
 import java.io.ByteArrayOutputStream;

@@ -1,12 +1,13 @@
 package com.example.idnp_sunshield.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.idnp_sunshield.Entity.Location;
-import com.example.idnp_sunshield.Singleton.LocationSingleton;
+import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.Views.BarChartView;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
@@ -65,12 +66,16 @@ public class Forecast extends Fragment  {
 
         System.out.println("retrofit: " + retrofit);
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
-        LocationSingleton locationSingleton = LocationSingleton.getInstance();
-        Location ubicacion = locationSingleton.getLocation();
+        Context context = requireContext();
 
-        System.out.println("LOCALIZACION ubicacion: " + ubicacion.getTitle());
+        LocationPreferences locationPreferences = new LocationPreferences(requireContext());
+        System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getTitle());
+        // Make an asynchronous call to get UV data from OpenWeatherMap API
+        System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLatitude());
+        System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLongitude());
+
         // Make an asynchronous API call to get weather data
-        Call<UVData> call = interfaceApi.getData(ubicacion.getLatitude(), ubicacion.getLongitude(), "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
+        Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
 
         //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
