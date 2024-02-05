@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -47,6 +49,30 @@ public class Alerts extends Fragment {
         // Call the data method to load and display information
         //data();
         // Return the root view of the fragment
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("En el boton de alerts");
+                // Crear una instancia del nuevo fragmento
+                Locations locations_fragment = new Locations();
+
+                // Obtener el FragmentManager
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                // Iniciar una transacción
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                // Reemplazar el fragmento actual con el nuevo fragmento
+                fragmentTransaction.replace(R.id.fragment_alerts, locations_fragment);
+
+                // Agregar la transacción a la pila para que pueda ser retrocedida
+                fragmentTransaction.addToBackStack(null);
+
+                // Confirmar la transacción
+                fragmentTransaction.commit();
+            }
+        });
+
 
         // Set up RecyclerView
         RecyclerView recyclerView = binding.recyclerView2;
