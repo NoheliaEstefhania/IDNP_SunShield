@@ -14,10 +14,14 @@ public class Location {
     private double latitude;
     @ColumnInfo(name = "title")
     private String title;
-    public Location(double longitude, double latitude, String title){
+    @ColumnInfo(name = "state")
+    private boolean state;
+
+    public Location(double longitude, double latitude, String title, boolean state){
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
+        this.state = state;
     }
     public int getId() {
         return id;
@@ -34,6 +38,9 @@ public class Location {
     public void setTitle(String title) {
         this.title = title;
     }
+    public void setState(boolean state) {
+        this.state = state;
+    }
     public double getLongitude(){
         return this.longitude;
     }
@@ -43,4 +50,8 @@ public class Location {
     public String getTitle(){
         return this.title;
     }
+    public boolean getState(){
+        return this.state;
+    }
+
 }
