@@ -3,26 +3,29 @@ package com.example.idnp_sunshield.Fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.idnp_sunshield.Entity.DataBase;
 import com.example.idnp_sunshield.Entity.Illness;
+import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.databinding.FragmentAlertsBinding;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Alerts#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Alerts extends Fragment {
 
     FragmentAlertsBinding binding;
@@ -31,15 +34,6 @@ public class Alerts extends Fragment {
     public Alerts() {
         // Required empty public constructor
     }
-
-    // Factory method to create a new instance of the Alerts fragment
-    public static Alerts newInstance(String param1, String param2) {
-        Alerts fragment = new Alerts();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,76 +45,31 @@ public class Alerts extends Fragment {
         // Inflate the layout for this fragment using data binding
         binding = FragmentAlertsBinding.inflate(inflater, container, false);
         // Call the data method to load and display information
-        data();
+        //data();
         // Return the root view of the fragment
+
+        // Set up RecyclerView
+        RecyclerView recyclerView = binding.recyclerView2;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+
+        DataBase dataBase = Room.databaseBuilder(
+                getActivity().getApplicationContext(),
+                DataBase.class,
+                "dbPruebas"
+        ).addMigrations(DataBase.MIGRATION_2_3).allowMainThreadQueries().build();
+        List<Location> locationsList;
+        locationsList = dataBase.getLocationDAO().getAllLocations();
+        for (Location location : locationsList) {
+            System.out.println("Valores de locationsList: Country: "+  location.getTitle() + " Latitud=" + location.getLatitude() +
+                    ", Longitud=" + location.getLongitude());
+        }
+        // Set up the adapter
+        AlertsAdapter adapter = new AlertsAdapter(locationsList);
+        recyclerView.setAdapter(adapter);
+
         return binding.getRoot();
     }
-
-    // Method to load and display data in the fragment
-    /*private void data(){
-        // List to store illnesses retrieved from the database
-        List<Illness> illnessList;
-
-        // Create or open the Room database
-        DataBase dataBase = Room.databaseBuilder(
-                getActivity().getApplicationContext(),
-                DataBase.class,
-                "dbPruebas"
-        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
-
-
-        // Dummy data: byte array representing an image (replace with actual image data)
-        byte[] photos = {(byte) R.drawable.img_disease01};
-
-        // Load the image into a Bitmap
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_disease01);
-
-        // Convert the Bitmap to a byte array
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        // Add an illness with the image to the database
-        dataBase.getIllnessDAO().addIllness(new Illness("In process", "In process", byteArray));
-
-        // Retrieve all illnesses from the database
-        illnessList = dataBase.getIllnessDAO().getAllIllnesses();
-
-        // Display the title of the first illness in the TextView
-        binding.alertTextView.setText(illnessList.get(0).getTitle());
-
-        // Display the image in the ImageView
-        binding.imageView.setImageBitmap(bitmap);
-    }*/
-    /*private void data() {
-        // List to store illnesses retrieved from the database
-        List<Illness> illnessList;
-
-        // Create or open the Room database
-        DataBase dataBase = Room.databaseBuilder(
-                getActivity().getApplicationContext(),
-                DataBase.class,
-                "dbPruebas"
-        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
-
-        // Obtén el ID del recurso de la imagen desde el directorio drawable
-        int drawableResourceId = R.drawable.img_disease01;
-
-        // Crea una Illness con la imagen del directorio drawable
-        Illness newIllness = new Illness("In process", "In process", getDrawableAsByteArray(drawableResourceId));
-
-        // Añade la Illness a la base de datos
-        dataBase.getIllnessDAO().addIllness(newIllness);
-
-        // Recupera todas las enfermedades de la base de datos
-        illnessList = dataBase.getIllnessDAO().getAllIllnesses();
-
-        // Muestra el título de la primera enfermedad en el TextView
-        binding.alertTextView.setText(illnessList.get(0).getTitle());
-
-        // Muestra la imagen en el ImageView
-        binding.imageView.setImage(illnessList.get(0).getImage());
-    }*/
 
     private void data() {
         // Create or open the Room database
@@ -160,7 +109,7 @@ public class Alerts extends Fragment {
             binding.alertTextView.setText(firstIllness.getTitle());
 
             // Muestra la imagen de la primera enfermedad en el ImageView
-            binding.imageView.setImageBitmap(firstIllnessBitmap);
+            //binding.imageView.setImageBitmap(firstIllnessBitmap);
         } else {
             // Manejar el caso en el que no hay ninguna enfermedad en la base de datos
         }
@@ -172,12 +121,78 @@ public class Alerts extends Fragment {
     }
 
 
-    // Método para convertir un recurso drawable en un array de bytes
-    private byte[] getDrawableAsByteArray(int drawableResourceId) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableResourceId);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
+    public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.MyViewHolder> {
+        private List<Location> locationList;
+        FragmentAlertsBinding binding;
+
+        //private int selectedPosition = RecyclerView.NO_POSITION;
+
+
+        public AlertsAdapter (List<Location> locationList) {
+            this.locationList = locationList;
+        }
+
+        @NonNull
+        @Override
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_locations_item, parent, false);
+            System.out.println("VAlor View "+ view);
+            return new MyViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            System.out.println("Longitud recivida: " + getItemCount());
+            Location item = locationList.get(position);
+            holder.textView.setText(item.getTitle());
+            holder.switchView.setChecked(item.getState());
+            System.out.println("Item at position " + position + ": " + item.getTitle() + ", SwitchState: " + item.getState());
+            holder.switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // Update the switch state in the model
+                item.setState(isChecked);
+
+                // Uncheck all other switches
+                uncheckOtherSwitches(position);
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return locationList.size();
+        }
+
+        private void uncheckOtherSwitches(int currentPosition) {
+            try {
+                for (int i = 0; i < locationList.size(); i++) {
+                    if (i != currentPosition) {
+                        locationList.get(i).setState(false);
+                        notifyItemChanged(i);
+                    }
+                }
+                binding.recyclerView2.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyItemChanged(currentPosition);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            TextView textView;
+            Switch switchView;
+
+            public MyViewHolder(@NonNull View itemView) {
+                super(itemView);
+                textView = itemView.findViewById(R.id.textView);
+                switchView = itemView.findViewById(R.id.switchView);
+            }
+        }
     }
+
 
 }
