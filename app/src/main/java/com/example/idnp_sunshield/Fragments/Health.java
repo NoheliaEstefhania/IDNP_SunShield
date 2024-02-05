@@ -66,7 +66,7 @@ public class Health extends Fragment {
                 getActivity().getApplicationContext(),
                 DataBase.class,
                 "dbPruebas"
-        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
+        ).addMigrations(DataBase.MIGRATION_2_3).allowMainThreadQueries().build();
 
         // Verificar si ya hay información en la base de datos
         List<Illness> existingIllnesses = dataBase.getIllnessDAO().getAllIllnesses();

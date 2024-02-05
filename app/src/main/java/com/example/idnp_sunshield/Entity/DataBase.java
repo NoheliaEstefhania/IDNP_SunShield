@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 // Define a Room database
 @Database(
         entities = {Location.class, Illness.class}, // Specify the entities (tables) in the database
-        version = 2 // Set the version number of the database schema
+        version = 3 // Set the version number of the database schema
 )
 public abstract class DataBase extends RoomDatabase {
     // Declare abstract methods to provide DAO (Data Access Object) instances
@@ -22,6 +22,13 @@ public abstract class DataBase extends RoomDatabase {
             // Puedes ejecutar las sentencias SQL necesarias para modificar la estructura de la base de datos
             // En este ejemplo, agregamos una nueva columna llamada 'title' a la tabla 'Location'
             database.execSQL("ALTER TABLE Location ADD COLUMN title TEXT");
+        }
+    };
+
+    public static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE Location ADD COLUMN state INTEGER NOT NULL DEFAULT 0");
         }
     };
 }

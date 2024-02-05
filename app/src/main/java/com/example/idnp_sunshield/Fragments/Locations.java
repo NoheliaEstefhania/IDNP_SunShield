@@ -84,7 +84,7 @@ public class Locations extends Fragment {
                 getActivity().getApplicationContext(),
                 DataBase.class,
                 "dbPruebas"
-        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
+        ).addMigrations(DataBase.MIGRATION_2_3).allowMainThreadQueries().build();
 
         double latitud = getLatitud();
         double longitud = getLongitud();
@@ -110,7 +110,7 @@ public class Locations extends Fragment {
 
         if (!locationAlreadyRegistered) {
             System.out.println("entre al registro");
-            dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation));
+            dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation, false));
 
         }
 
@@ -139,8 +139,6 @@ public class Locations extends Fragment {
         String title = locationsList.get(0).getTitle();  // Reemplaza con el título real
 
         locationPreferences.saveLocation(longitude, latitude , title);
-
-
 
         for (int i = 0; i < locationsList.toArray().length; i++) {
             dataBase.getLocationDAO().deleteLocation(locationsList.get(i));
