@@ -22,6 +22,7 @@ import com.example.idnp_sunshield.Entity.DataBase;
 import com.example.idnp_sunshield.Entity.Illness;
 import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.R;
+import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.databinding.FragmentAlertsBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -82,10 +83,7 @@ public class Alerts extends Fragment {
         // Set up the adapter
         AlertsAdapter adapter = new AlertsAdapter(locationsList, binding);
         recyclerView.setAdapter(adapter);
-        if(getActiveLocationFromAdapter() != null)
-            System.out.println("valor acitivo "+ getActiveLocationFromAdapter().getTitle());
-        else
-            System.out.println("VALOR NULO");
+
         return binding.getRoot();
     }
 
@@ -101,6 +99,7 @@ public class Alerts extends Fragment {
         private List<Location> locationList;
         FragmentAlertsBinding binding;
         private int activePosition = -1;
+        private int lastActivePosition = -1;
 
         //private int selectedPosition = RecyclerView.NO_POSITION;
 
@@ -142,6 +141,18 @@ public class Alerts extends Fragment {
                 }
             });
 
+            if(getActiveLocationFromAdapter() != null) {
+                System.out.println("valor acitivo " + getActiveLocationFromAdapter().getTitle());
+                LocationPreferences locationPreferences = new LocationPreferences(requireContext());
+                // Establecer la información de ubicación
+                double latitude = getActiveLocationFromAdapter().getLatitude();  // Reemplaza con la latitud real
+                double longitude = getActiveLocationFromAdapter().getLongitude();  // Reemplaza con la longitud real
+                String title = getActiveLocationFromAdapter().getTitle();  // Reemplaza con el título real
+
+                locationPreferences.saveLocation(longitude, latitude , title);
+            }else
+                System.out.println("VALOR NULO");
+
         }
 
         @Override
@@ -159,9 +170,9 @@ public class Alerts extends Fragment {
                 }
             }
 
-            // Si no hay ninguno activo, activa el primero
-            if (!atLeastOneActive && !locationList.isEmpty()) {
-                locationList.get(0).setState(true);
+            // Si no hay ninguno activo, restaura el último activo
+            if (!atLeastOneActive && lastActivePosition != -1 && lastActivePosition < locationList.size()) {
+                locationList.get(lastActivePosition).setState(true);
             }
         }
         private void uncheckOtherSwitches(int currentPosition) {
@@ -185,15 +196,6 @@ public class Alerts extends Fragment {
                 e.printStackTrace();
             }
         }
-
-
-        /*public Location getActiveLocation() {
-            if (activePosition != -1 && activePosition < locationList.size()) {
-                Location activeLocation = locationList.get(activePosition);
-                return activeLocation.getState() ? activeLocation : null;
-            }
-            return null;
-        }*/
 
         public Location getActiveLocation() {
             for (Location location : locationList) {
