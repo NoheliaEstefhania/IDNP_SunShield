@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.idnp_sunshield.Entity.Illness;
+import com.example.idnp_sunshield.Fragments.DetailFragment;
 import com.example.idnp_sunshield.Fragments.UV_index;
 import com.example.idnp_sunshield.R;
 
@@ -67,7 +68,7 @@ public class AdapterDisease extends RecyclerView.Adapter<AdapterDisease.AdapterD
                 @Override
                 public void onClick(View v) {
                     // Create a new instance of your detail fragment
-                    UV_index.DetailFragment detailFragment = UV_index.DetailFragment.newInstance(
+                    DetailFragment detailFragment = DetailFragment.newInstance(
                             illnessList.get(getBindingAdapterPosition()).getTitle(),
                             illnessList.get(getBindingAdapterPosition()).getDescription(),
                             illnessList.get(getBindingAdapterPosition()).getImage()
