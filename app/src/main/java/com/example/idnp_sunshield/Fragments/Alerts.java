@@ -47,28 +47,16 @@ public class Alerts extends Fragment {
         // Inflate the layout for this fragment using data binding
         binding = FragmentAlertsBinding.inflate(inflater, container, false);
         // Call the data method to load and display information
-        //data();
         // Return the root view of the fragment
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("En el boton de alerts");
-                // Crear una instancia del nuevo fragmento
                 Locations locations_fragment = new Locations();
-
-                // Obtener el FragmentManager
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-                // Iniciar una transacción
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                // Reemplazar el fragmento actual con el nuevo fragmento
                 fragmentTransaction.replace(R.id.fragment_alerts, locations_fragment);
-
-                // Agregar la transacción a la pila para que pueda ser retrocedida
                 fragmentTransaction.addToBackStack(null);
-
-                // Confirmar la transacción
                 fragmentTransaction.commit();
             }
         });
@@ -79,6 +67,7 @@ public class Alerts extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
+
         DataBase dataBase = Room.databaseBuilder(
                 getActivity().getApplicationContext(),
                 DataBase.class,
@@ -88,74 +77,37 @@ public class Alerts extends Fragment {
         locationsList = dataBase.getLocationDAO().getAllLocations();
         for (Location location : locationsList) {
             System.out.println("Valores de locationsList: Country: "+  location.getTitle() + " Latitud=" + location.getLatitude() +
-                    ", Longitud=" + location.getLongitude());
+                    ", Longitud=" + location.getLongitude() + ", State: " + location.getState());
         }
         // Set up the adapter
-        AlertsAdapter adapter = new AlertsAdapter(locationsList);
+        AlertsAdapter adapter = new AlertsAdapter(locationsList, binding);
         recyclerView.setAdapter(adapter);
-
+        if(getActiveLocationFromAdapter() != null)
+            System.out.println("valor acitivo "+ getActiveLocationFromAdapter().getTitle());
+        else
+            System.out.println("VALOR NULO");
         return binding.getRoot();
     }
 
-    private void data() {
-        // Create or open the Room database
-        DataBase dataBase = Room.databaseBuilder(
-                getActivity().getApplicationContext(),
-                DataBase.class,
-                "dbPruebas"
-        ).addMigrations(DataBase.MIGRATION_1_2).allowMainThreadQueries().build();
-
-        // Dummy data: byte array representing an image (replace with actual image data)
-        byte[] photos = {(byte) R.drawable.img_disease01};
-
-        // Load the image into a Bitmap
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_disease02);
-
-        // Convert the Bitmap to a byte array
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        // Add a new illness with the image to the database
-        Illness newIllness = new Illness("New Illness", "Description", byteArray);
-        dataBase.getIllnessDAO().addIllness(newIllness);
-
-        // Retrieve all illnesses from the database
-        List<Illness> illnessList = dataBase.getIllnessDAO().getAllIllnesses();
-
-        // Verifica si hay alguna enfermedad en la lista
-        if (!illnessList.isEmpty()) {
-            // Recupera la primera enfermedad (puedes ajustar esto según tus necesidades)
-            Illness firstIllness = illnessList.get(0);
-
-            // Convierte el array de bytes de la imagen en un Bitmap
-            Bitmap firstIllnessBitmap = BitmapFactory.decodeByteArray(firstIllness.getImage(), 0, firstIllness.getImage().length);
-
-            // Muestra el título de la primera enfermedad en el TextView
-            binding.alertTextView.setText(firstIllness.getTitle());
-
-            // Muestra la imagen de la primera enfermedad en el ImageView
-            //binding.imageView.setImageBitmap(firstIllnessBitmap);
-        } else {
-            // Manejar el caso en el que no hay ninguna enfermedad en la base de datos
+    public Location getActiveLocationFromAdapter() {
+        if (binding != null && binding.recyclerView2 != null && binding.recyclerView2.getAdapter() instanceof AlertsAdapter) {
+            AlertsAdapter adapter = (AlertsAdapter) binding.recyclerView2.getAdapter();
+            return adapter.getActiveLocation();
         }
-
-        System.out.println("Eliminacion");
-        for (int i = 0; i < illnessList.toArray().length; i++) {
-            dataBase.getIllnessDAO().deleteIllness(illnessList.get(i));
-        }
+        return null;
     }
-
 
     public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.MyViewHolder> {
         private List<Location> locationList;
         FragmentAlertsBinding binding;
+        private int activePosition = -1;
 
         //private int selectedPosition = RecyclerView.NO_POSITION;
 
 
-        public AlertsAdapter (List<Location> locationList) {
+        public AlertsAdapter(List<Location> locationList, FragmentAlertsBinding binding) {
             this.locationList = locationList;
+            this.binding = binding;
         }
 
         @NonNull
@@ -179,7 +131,17 @@ public class Alerts extends Fragment {
 
                 // Uncheck all other switches
                 uncheckOtherSwitches(position);
+                ensureOneActive();
+
+                activePosition = isChecked ? position : -1;
+                Location activeLocation = getActiveLocation();
+                if (activeLocation != null) {
+                    System.out.println("Valor activo después del cambio: " + activeLocation.getTitle());
+                } else {
+                    System.out.println("NO hay valor activo después del cambio");
+                }
             });
+
         }
 
         @Override
@@ -187,6 +149,21 @@ public class Alerts extends Fragment {
             return locationList.size();
         }
 
+        private void ensureOneActive() {
+            boolean atLeastOneActive = false;
+
+            for (Location location : locationList) {
+                if (location.getState()) {
+                    atLeastOneActive = true;
+                    break;
+                }
+            }
+
+            // Si no hay ninguno activo, activa el primero
+            if (!atLeastOneActive && !locationList.isEmpty()) {
+                locationList.get(0).setState(true);
+            }
+        }
         private void uncheckOtherSwitches(int currentPosition) {
             try {
                 for (int i = 0; i < locationList.size(); i++) {
@@ -195,6 +172,9 @@ public class Alerts extends Fragment {
                         notifyItemChanged(i);
                     }
                 }
+                // Guarda la posición del elemento activo
+                activePosition = currentPosition;
+
                 binding.recyclerView2.post(new Runnable() {
                     @Override
                     public void run() {
@@ -207,7 +187,22 @@ public class Alerts extends Fragment {
         }
 
 
+        /*public Location getActiveLocation() {
+            if (activePosition != -1 && activePosition < locationList.size()) {
+                Location activeLocation = locationList.get(activePosition);
+                return activeLocation.getState() ? activeLocation : null;
+            }
+            return null;
+        }*/
 
+        public Location getActiveLocation() {
+            for (Location location : locationList) {
+                if (location.getState()) {
+                    return location;
+                }
+            }
+            return null;
+        }
         public class MyViewHolder extends RecyclerView.ViewHolder {
             TextView textView;
             Switch switchView;
