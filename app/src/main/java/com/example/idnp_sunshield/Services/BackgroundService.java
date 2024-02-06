@@ -22,12 +22,10 @@ public class BackgroundService extends Service {
 
     private final IBinder binder = new LocalBinder();
     private Handler handler;
-    private final int delay = 15000; // 1 minuto (ajusta según sea necesario)
+    private final int delay = 15000; // 15 seg de delay
     private double lastUviValue = 0;
-    private int notificationCount = 0; // Nuevo contador
     public static final String ACTION_UVI_UPDATE = "com.example.idnp_sunshield.ACTION_UVI_UPDATE";
     private Context mContext;
-
 
     public class LocalBinder extends Binder {
         public BackgroundService getService() {
@@ -72,15 +70,11 @@ public class BackgroundService extends Service {
                 .build();
 
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
-        //LocationSingleton locationSingleton = LocationSingleton.getInstance();
-        //Context context = requireContext();
-
         LocationPreferences locationPreferences = new LocationPreferences(mContext);
         System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getTitle());
         // Make an asynchronous call to get UV data from OpenWeatherMap API
         System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getLatitude());
         System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getLongitude());
-
 
         Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");

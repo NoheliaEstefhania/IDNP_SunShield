@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
 import com.example.idnp_sunshield.Models.current;
@@ -39,13 +38,6 @@ public class UV_index extends Fragment {
 
     public UV_index() {
         // Required empty public constructor
-    }
-
-    public static UV_index newInstance(String param1, String param2) {
-        UV_index fragment = new UV_index();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -98,18 +90,14 @@ public class UV_index extends Fragment {
 
         // Create an instance of the InterfaceApi using the Retrofit instance
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
-        //LocationSingleton locationSingleton = LocationSingleton.getInstance();
         Context context = requireContext();
-
         LocationPreferences locationPreferences = new LocationPreferences(requireContext());
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getTitle());
         // Make an asynchronous call to get UV data from OpenWeatherMap API
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLatitude());
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLongitude());
 
-
         Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,daily", "c71298943776351e81c2f4e84456a36d");
-
         //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
             @Override
@@ -235,10 +223,6 @@ public class UV_index extends Fragment {
         }
 
         private static byte[] convertImageResourceToByteArray(int imageResource) {
-            // Aquí puedes implementar la conversión de un recurso de imagen a un array de bytes
-            // Por ejemplo, puedes usar BitmapFactory para decodificar el recurso a un Bitmap
-            // y luego convertir el Bitmap a un array de bytes
-            // Este código es solo un ejemplo y puedes ajustarlo según tus necesidades
             Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), imageResource);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
