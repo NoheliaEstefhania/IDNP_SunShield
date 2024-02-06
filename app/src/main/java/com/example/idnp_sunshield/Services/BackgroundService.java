@@ -3,6 +3,7 @@ package com.example.idnp_sunshield.Services;
 // En tu servicio BackgroundService
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.os.IBinder;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
 import com.example.idnp_sunshield.Models.current;
+import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +26,7 @@ public class BackgroundService extends Service {
     private double lastUviValue = 0;
     private int notificationCount = 0; // Nuevo contador
     public static final String ACTION_UVI_UPDATE = "com.example.idnp_sunshield.ACTION_UVI_UPDATE";
+    private Context mContext;
 
 
     public class LocalBinder extends Binder {
@@ -41,6 +44,7 @@ public class BackgroundService extends Service {
         super.onCreate();
 
         handler = new Handler();
+        mContext = getApplicationContext();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -68,8 +72,18 @@ public class BackgroundService extends Service {
                 .build();
 
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
+        //LocationSingleton locationSingleton = LocationSingleton.getInstance();
+        //Context context = requireContext();
 
-        Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
+        LocationPreferences locationPreferences = new LocationPreferences(mContext);
+        System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getTitle());
+        // Make an asynchronous call to get UV data from OpenWeatherMap API
+        System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getLatitude());
+        System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getLongitude());
+
+
+        Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,daily", "c71298943776351e81c2f4e84456a36d");
+        //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
             @Override
             public void onResponse(Call<UVData> call, Response<UVData> response) {
