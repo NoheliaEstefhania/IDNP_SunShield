@@ -8,14 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.idnp_sunshield.Entity.Illness;
 import com.example.idnp_sunshield.Fragments.DetailFragment;
-import com.example.idnp_sunshield.Fragments.UV_index;
 import com.example.idnp_sunshield.R;
 
 import java.util.List;
