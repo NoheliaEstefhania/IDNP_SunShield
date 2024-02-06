@@ -1,7 +1,6 @@
 package com.example.idnp_sunshield.Fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,14 +18,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.idnp_sunshield.Entity.DataBase;
-import com.example.idnp_sunshield.Entity.Illness;
+
 import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.R;
 import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.databinding.FragmentAlertsBinding;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Alerts extends Fragment {
@@ -101,9 +98,6 @@ public class Alerts extends Fragment {
         private int activePosition = -1;
         private int lastActivePosition = -1;
 
-        //private int selectedPosition = RecyclerView.NO_POSITION;
-
-
         public AlertsAdapter(List<Location> locationList, FragmentAlertsBinding binding) {
             this.locationList = locationList;
             this.binding = binding;
@@ -136,6 +130,15 @@ public class Alerts extends Fragment {
                 Location activeLocation = getActiveLocation();
                 if (activeLocation != null) {
                     System.out.println("Valor activo después del cambio: " + activeLocation.getTitle());
+
+                    DataBase dataBase = Room.databaseBuilder(
+                            getActivity().getApplicationContext(),
+                            DataBase.class,
+                            "dbPruebas"
+                    ).addMigrations(DataBase.MIGRATION_2_3).allowMainThreadQueries().build();
+
+                    activeLocation.setState(true);
+                    dataBase.getLocationDAO().updateLocation(activeLocation);
                 } else {
                     System.out.println("NO hay valor activo después del cambio");
                 }
@@ -179,6 +182,14 @@ public class Alerts extends Fragment {
             try {
                 for (int i = 0; i < locationList.size(); i++) {
                     if (i != currentPosition) {
+                        DataBase dataBase = Room.databaseBuilder(
+                                getActivity().getApplicationContext(),
+                                DataBase.class,
+                                "dbPruebas"
+                        ).addMigrations(DataBase.MIGRATION_2_3).allowMainThreadQueries().build();
+
+                        locationList.get(i).setState(false);
+                        dataBase.getLocationDAO().updateLocation(locationList.get(i));
                         locationList.get(i).setState(false);
                         notifyItemChanged(i);
                     }
