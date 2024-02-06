@@ -109,8 +109,12 @@ public class Locations extends Fragment {
         }
 
         if (!locationAlreadyRegistered) {
+            /*if(locationsList.isEmpty()){
+                System.out.println("Primer registro");
+                dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation, true));
+            }*/
             System.out.println("entre al registro");
-            dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation, false));
+            dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation, locationsList.isEmpty()));
 
         }
 
@@ -120,29 +124,30 @@ public class Locations extends Fragment {
 
         for (Location location : locationsList) {
             System.out.println("Valores de locationsList: Country: "+  location.getTitle() + " Latitud=" + location.getLatitude() +
-                    ", Longitud=" + location.getLongitude());
+                    ", Longitud=" + location.getLongitude() + " , State: " + location.getState());
         }
 
         //binding.showCountry.setText(!locationsList.isEmpty() ? (locationsList.get(0).getLatitude() + locationsList.get(0).getLongitude() + "") : "");
         binding.showCountry.setText(locationsList.get(0).getLatitude() + " "+ locationsList.get(0).getLongitude() + " ");
 
         // Inicia el servicio y envía datos a través de un Intent
+        System.out.println("SERVICE latitude: " + locationsList.get(0).getTitle());
         System.out.println("SERVICE latitude: " + locationsList.get(0).getLatitude());
         System.out.println("SERVICE longitude: " + locationsList.get(0).getLongitude());
 
         // Obtener la instancia de LocationPreferences
         LocationPreferences locationPreferences = new LocationPreferences(requireContext());
 
-        // Establecer la información de ubicación
+        /*// Establecer la información de ubicación
         double latitude = locationsList.get(0).getLatitude();  // Reemplaza con la latitud real
         double longitude = locationsList.get(0).getLongitude();  // Reemplaza con la longitud real
         String title = locationsList.get(0).getTitle();  // Reemplaza con el título real
 
-        locationPreferences.saveLocation(longitude, latitude , title);
+        locationPreferences.saveLocation(longitude, latitude , title);*/
 
-        for (int i = 0; i < locationsList.toArray().length; i++) {
+        /*for (int i = 0; i < locationsList.toArray().length; i++) {
             dataBase.getLocationDAO().deleteLocation(locationsList.get(i));
-        }
+        }*/
         System.out.println("Cantidad de valores de locationsList después: " + locationsList.size());
     }
 
