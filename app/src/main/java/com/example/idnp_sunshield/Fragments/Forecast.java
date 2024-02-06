@@ -6,14 +6,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.idnp_sunshield.Entity.Location;
 import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.Views.BarChartView;
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
-import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.Models.daily;
-import com.example.idnp_sunshield.Models.main;
 import com.example.idnp_sunshield.databinding.FragmentForecastBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +80,6 @@ public class Forecast extends Fragment  {
             public void onResponse(Call<UVData> call, Response<UVData> response) {
                 if (response.isSuccessful()) {
                     UVData mausanData = response.body();
-                    main to = mausanData.getMain();
-                    current tc = mausanData.getCurrent();
                     List<daily> td = mausanData.getDaily();
                     List<daily> dataList = new ArrayList<>();
                     System.out.println("I am in the response");

@@ -14,14 +14,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.idnp_sunshield.Interfaces.InterfaceApi;
 import com.example.idnp_sunshield.Models.UVData;
 import com.example.idnp_sunshield.Models.current;
-import com.example.idnp_sunshield.Models.main;
-import com.example.idnp_sunshield.R;
+
 import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
@@ -105,8 +102,7 @@ public class UV_index extends Fragment {
                 if (response.isSuccessful()) {
                     // Retrieve UVData from the response
                     UVData uvData = response.body();
-                    // Extract main and current data from UVData
-                    main to = uvData.getMain();
+
                     current tc = uvData.getCurrent();
 
                     // Update UI components with UV index value

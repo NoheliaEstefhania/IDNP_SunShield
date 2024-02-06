@@ -4,16 +4,12 @@ import java.util.List;
 
 public class UVData {
     // Fields representing weather data
-    private List<weather> weather;               // List of weather conditions
-    private main main;                           // Main weather data
     private current current;                     // Current weather data
     private List<daily> daily;                   // List of daily weather data - many days
     private String name;                         // Location name
 
     // Constructor to initialize the object with specific values
-    public UVData(List<weather> weather, main main, String name, current current, List<daily> daily) {
-        this.weather = weather;
-        this.main = main;
+    public UVData(String name, current current, List<daily> daily) {
         this.name = name;
         this.current = current;
         this.daily = daily;
@@ -36,22 +32,6 @@ public class UVData {
 
     public void setCurrent(current current) {
         this.current = current;
-    }
-
-    public List<weather> getWeather() {
-        return weather;
-    }
-
-    public void setWeather(List<weather> weather) {
-        this.weather = weather;
-    }
-
-    public main getMain() {
-        return main;
-    }
-
-    public void setMain(main main) {
-        this.main = main;
     }
 
     public String getName() {
