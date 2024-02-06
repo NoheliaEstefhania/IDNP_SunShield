@@ -14,36 +14,57 @@
 
         <TextView
             android:id="@+id/showCountry"
-            android:layout_width="158dp"
-            android:layout_height="83dp"
-            android:layout_marginBottom="344dp"
-            android:text="TextView"
+            android:layout_width="214dp"
+            android:layout_height="59dp"
+            android:text="Add a new place"
+            android:textColor="#08A3E2"
+            android:textSize="28sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.418"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.101" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="172dp"
+            android:layout_height="41dp"
+            android:text="Write a place:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/locationText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.334"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/showCountry"
+            app:layout_constraintVertical_bias="0.652" />
 
         <EditText
             android:id="@+id/locationText"
             android:layout_width="251dp"
             android:layout_height="74dp"
-            android:layout_marginBottom="508dp"
+            android:layout_marginBottom="412dp"
             android:ems="10"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.437"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/showCountry"
+            app:layout_constraintVertical_bias="0.954" />
 
         <Button
             android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
+            android:layout_width="133dp"
+            android:layout_height="75dp"
+            android:text="Agregar"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/showCountry" />
+            app:layout_constraintTop_toBottomOf="@+id/showCountry"
+            app:layout_constraintVertical_bias="0.577" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

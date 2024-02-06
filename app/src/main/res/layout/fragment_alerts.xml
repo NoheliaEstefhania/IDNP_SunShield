@@ -19,20 +19,26 @@
             android:id="@+id/alert_textView"
             android:layout_width="208dp"
             android:layout_height="44dp"
-            android:text="SeraReemplado"
+            android:text="Alerts"
+            android:textAlignment="center"
+            android:textColor="#08A3E2"
+            android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.678" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView2"
             android:layout_width="326dp"
-            android:layout_height="405dp"
-            android:layout_marginBottom="228dp"
+            android:layout_height="358dp"
+            android:layout_marginBottom="220dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.537"
+            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -41,11 +47,13 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="144dp"
-            android:text="Button"
+            android:layout_marginBottom="120dp"
+            android:background="@drawable/background_button_round"
+            android:text="+"
+            android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.884"
+            app:layout_constraintHorizontal_bias="0.891"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

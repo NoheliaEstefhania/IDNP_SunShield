@@ -128,7 +128,7 @@ public class Locations extends Fragment {
         }
 
         //binding.showCountry.setText(!locationsList.isEmpty() ? (locationsList.get(0).getLatitude() + locationsList.get(0).getLongitude() + "") : "");
-        binding.showCountry.setText(locationsList.get(0).getLatitude() + " "+ locationsList.get(0).getLongitude() + " ");
+        //binding.showCountry.setText(locationsList.get(0).getLatitude() + " "+ locationsList.get(0).getLongitude() + " ");
 
         // Inicia el servicio y envía datos a través de un Intent
         System.out.println("SERVICE latitude: " + locationsList.get(0).getTitle());

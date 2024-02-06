@@ -16,14 +16,17 @@
             android:id="@+id/textView_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="title"
+            android:text="Cancer"
+            android:textAlignment="center"
+            android:textColor="#08A3E2"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.024" />
+            app:layout_constraintVertical_bias="0.05" />
 
         <ImageView
             android:id="@+id/imageView_item"
@@ -39,9 +42,12 @@
 
         <TextView
             android:id="@+id/textView_item_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
+            android:layout_width="341dp"
+            android:layout_height="93dp"
+            android:background="@drawable/rounded_border"
+            android:padding="10dp"
+            android:text="UV radiation is a risk factor for several types of skin cancer."
+            android:textColor="#FEFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
