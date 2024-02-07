@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ContextCompat.startForegroundService(this, serviceIntent);
 
         LocationPreferences locationPreferences = new LocationPreferences(getApplicationContext());
-        locationPreferences.clear();
+        //locationPreferences.clear();
 
         System.out.println("BOOLEAN MAIN "+locationPreferences.hasLocationData());
         // Verificar si hay datos en SharedPreferences
