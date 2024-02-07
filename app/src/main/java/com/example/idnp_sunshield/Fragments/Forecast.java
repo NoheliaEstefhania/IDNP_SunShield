@@ -50,6 +50,9 @@ public class Forecast extends Fragment  {
         binding = FragmentForecastBinding.inflate(inflater, container, false);
         barChartView = binding.barChartView;
         // Fetch weather data
+        binding.forecastTitle.setText("Y-axis: UV Index\n" +
+                "X-axis: Days of the week\n" +
+                "Values: Expected UV radiation level for each day");
         fetchWeather();
         return binding.getRoot();
     }
@@ -83,7 +86,7 @@ public class Forecast extends Fragment  {
                     List<daily> td = mausanData.getDaily();
                     List<daily> dataList = new ArrayList<>();
                     System.out.println("I am in the response");
-                    binding.forecastTitle.setText("I am replacing");
+
 
                     for (daily daily : td) {
                         System.out.println("dt: " + date(daily.getDt()));
