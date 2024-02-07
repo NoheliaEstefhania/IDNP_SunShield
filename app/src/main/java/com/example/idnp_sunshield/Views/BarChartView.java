@@ -90,15 +90,8 @@ public class BarChartView extends View {
     // Method to draw a label and a horizontal line on the Y-axis
     private void drawYAxisLabelAndLine(Canvas canvas, String text, float y) {
         // Draw the label text at the specified position
-        /*canvas.drawText(text, 15, y, paint);
-
-        // Draw a horizontal line on the Y-axis, from the left end to the right end of the canvas
-        canvas.drawLine(0, y, getWidth(), y, paint);*/
-
-        paint.setColor(Color.BLACK);
-        paint.setColor(Color.GRAY);
+        paint.setColor(Color.RED);
         canvas.drawText(text, 15, y, paint);
-
         // Draw a horizontal line on the Y-axis, considering the height of the bars
         canvas.drawLine(100, y, getWidth(), y, paint);
     }
