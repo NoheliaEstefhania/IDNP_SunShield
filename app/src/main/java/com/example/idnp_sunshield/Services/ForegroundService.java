@@ -98,10 +98,11 @@ public class ForegroundService extends Service {
 
     // Method to build the notification
     private Notification buildNotification(String title, String contentText, PendingIntent pendingIntent) {
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.img_logo);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(contentText)
-                .setSmallIcon(R.drawable.img_disease01)
+                .setLargeIcon(largeIcon)
                 .setContentIntent(pendingIntent);
 
         return builder.build();
