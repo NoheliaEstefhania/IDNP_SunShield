@@ -24,6 +24,7 @@ public class Forecast extends Fragment  {
 
     FragmentForecastBinding binding;
     private BarChartView barChartView;
+
     // Default constructor
     public Forecast() {
         // Required empty public constructor
@@ -43,6 +44,7 @@ public class Forecast extends Fragment  {
         super.onCreate(savedInstanceState);
     }
 
+    // Method to create and return the view of the fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,12 +55,13 @@ public class Forecast extends Fragment  {
         binding.forecastTitle.setText("Y-axis: UV Index\n" +
                 "X-axis: Days of the week\n" +
                 "Values: Expected UV radiation level for each day");
-        fetchWeather();
+        fetchDailyUV();
         return binding.getRoot();
     }
 
-    // Method to fetch weather data using Retrofit
-    public void fetchWeather() {
+    // Method to fetchDailyUV data using Retrofit
+    // This method makes an asynchronous API call to fetch weather data using Retrofit.
+    public void fetchDailyUV() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -66,17 +69,16 @@ public class Forecast extends Fragment  {
 
         System.out.println("retrofit: " + retrofit);
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
-        Context context = requireContext();
 
+        Context context = requireContext();
         LocationPreferences locationPreferences = new LocationPreferences(requireContext());
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getTitle());
         // Make an asynchronous call to get UV data from OpenWeatherMap API
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLatitude());
         System.out.println("SHAREPREFERENTS ubicacion: " + locationPreferences.getLongitude());
 
-        // Make an asynchronous API call to get weather data
+        // Make an asynchronous API call
         Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
-
         //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,minutely", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
             @Override
@@ -107,6 +109,7 @@ public class Forecast extends Fragment  {
     }
 
     // Method to format the date based on timestamp
+    // This method formats the date based on the timestamp provided.
     private String date(long timestamp) {
         java.util.Date time = new java.util.Date((long) timestamp * 1000);
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM dd, yyyy");

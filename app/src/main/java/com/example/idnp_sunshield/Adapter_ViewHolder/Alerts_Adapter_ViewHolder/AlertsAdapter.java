@@ -34,6 +34,7 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
         this.mContext = mContext;
     }
 
+    // Inflates the layout for each item of the RecyclerView
     @NonNull
     @Override
     public AlertsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +43,7 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
         return new AlertsViewHolder(view);
     }
 
+    // Binds data to the views in each item of the RecyclerView
     @Override
     public void onBindViewHolder(@NonNull AlertsViewHolder holder, int position) {
         System.out.println("Longitud recivida: " + getItemCount());
@@ -49,6 +51,7 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
         holder.textView.setText(item.getTitle());
         holder.switchView.setChecked(item.getState());
         System.out.println("Item at position " + position + ": " + item.getTitle() + ", SwitchState: " + item.getState());
+        // Listener for Switch changes
         holder.switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Update the switch state in the model
             item.setState(isChecked);
@@ -57,6 +60,7 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
             uncheckOtherSwitches(position);
             ensureOneActive();
 
+            // Update the active position
             activePosition = isChecked ? position : -1;
             Location activeLocation = getActiveLocation();
             if (activeLocation != null) {
@@ -75,6 +79,7 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
             }
         });
 
+        // Save the active location in SharedPreferences
         if(getActiveLocationFromAdapter() != null) {
             System.out.println("valor acitivo " + getActiveLocationFromAdapter().getTitle());
             LocationPreferences locationPreferences = new LocationPreferences(mContext);
@@ -88,6 +93,8 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
             System.out.println("VALOR NULO");
 
     }
+
+    // Returns the number of items in the RecyclerView
     public Location getActiveLocationFromAdapter() {
         if (binding != null && binding.recyclerView2 != null && binding.recyclerView2.getAdapter() instanceof AlertsAdapter) {
             AlertsAdapter adapter = (AlertsAdapter) binding.recyclerView2.getAdapter();
@@ -100,6 +107,8 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
         return locationList.size();
     }
 
+
+    // Ensures that at least one switch is active
     private void ensureOneActive() {
         boolean atLeastOneActive = false;
 
@@ -110,11 +119,14 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
             }
         }
 
-        // Si no hay ninguno activo, restaura el último activo
+        // If none is active, restore the last active position
         if (!atLeastOneActive && lastActivePosition != -1 && lastActivePosition < locationList.size()) {
             locationList.get(lastActivePosition).setState(true);
         }
     }
+
+
+    // Unchecks all switches except the one at the given position
     private void uncheckOtherSwitches(int currentPosition) {
         try {
             for (int i = 0; i < locationList.size(); i++) {
@@ -145,6 +157,7 @@ public class AlertsAdapter  extends RecyclerView.Adapter<AlertsAdapter.AlertsVie
         }
     }
 
+    // Returns the active location
     public Location getActiveLocation() {
         for (Location location : locationList) {
             if (location.getState()) {

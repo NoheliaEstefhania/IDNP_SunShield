@@ -40,7 +40,7 @@ public class BackgroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        // Initialize handler to fetch UV data periodically
         handler = new Handler();
         mContext = getApplicationContext();
         handler.postDelayed(new Runnable() {
@@ -53,22 +53,25 @@ public class BackgroundService extends Service {
         }, delay);
     }
 
+    // Method to send UV index update broadcast
     private void sendUviUpdateBroadcast() {
         Intent intent = new Intent();
         intent.setAction(ACTION_UVI_UPDATE);
         intent.putExtra("UVI_VALUE", lastUviValue);
 
-        // Envía la transmisión (Broadcast)
+        // Send the broadcast
         sendBroadcast(intent);
     }
 
+    // Method to fetch UV index value from the API
     private void fetchUviValue() {
-        // Realiza la llamada a la API para obtener el valor actual del índice UV
+        // Create a Retrofit instance with the base URL and GsonConverterFactory
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        // Create an instance of the InterfaceApi using the Retrofit instance
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
         LocationPreferences locationPreferences = new LocationPreferences(mContext);
         System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getTitle());
@@ -76,6 +79,7 @@ public class BackgroundService extends Service {
         System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getLatitude());
         System.out.println("SHAREPREFERENTS SERVICE ubicacion: " + locationPreferences.getLongitude());
 
+        // Make an asynchronous call to get UV data from OpenWeatherMap API
         Call<UVData> call = interfaceApi.getData(locationPreferences.getLatitude(), locationPreferences.getLongitude(), "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         //Call<UVData> call = interfaceApi.getData(-16.39889, -71.535, "hourly,daily", "c71298943776351e81c2f4e84456a36d");
         call.enqueue(new Callback<UVData>() {
@@ -85,8 +89,9 @@ public class BackgroundService extends Service {
                     UVData uvData = response.body();
                     current tc = uvData.getCurrent();
 
+                    // Send UV index update broadcast
                     sendUviUpdateBroadcast();
-                    // Actualizar lastUviValue con el valor obtenido
+                    // Update lastUviValue with the fetched value
                     lastUviValue = tc.getUvi();
                 }
             }
@@ -100,7 +105,7 @@ public class BackgroundService extends Service {
 
     @Override
     public void onDestroy() {
-        // Detén el servicio y el handler cuando la aplicación se cierra
+        // Stop the service and handler when the application is closed
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }

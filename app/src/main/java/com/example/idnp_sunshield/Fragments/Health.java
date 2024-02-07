@@ -40,7 +40,7 @@ public class Health extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rv1.setLayoutManager(linearLayoutManager);
 
-        // Verificar y agregar información a la base de datos si es necesario
+        // Verify and add information to the database if necessary
         checkAndAddDataToDatabase();
         List<Illness> illnessList = getIllnessesFromDatabase();
         System.out.println("BEFORE onCreateView");
@@ -51,6 +51,7 @@ public class Health extends Fragment {
         return view;
     }
 
+    // Method to retrieve illnesses from the database
     private List<Illness> getIllnessesFromDatabase() {
         // Create or open the Room database
         DataBase dataBase = Room.databaseBuilder(
@@ -70,20 +71,18 @@ public class Health extends Fragment {
                 "dbPruebas"
         ).addMigrations(DataBase.MIGRATION_2_3).allowMainThreadQueries().build();
 
-        // Verificar si ya hay información en la base de datos
+        // Retrieve existing illnesses from the database
         List<Illness> existingIllnesses = dataBase.getIllnessDAO().getAllIllnesses();
 
         for (Illness ill: existingIllnesses) {
             System.out.println("Contenido ILLNESS: " + ill.getTitle());
         }
         System.out.println("valor de existingIllnesses.isEmpty() " + existingIllnesses.isEmpty());
-        /*if (existingIllnesses.isEmpty()) {
-            // La base de datos está vacía, así que agregamos la información
-            addDataToDatabase(dataBase);
-        }*/
+        // Add data to the database if it's empty or new data is available
         addDataToDatabase(dataBase);
     }
 
+    // Method to add sample data to the database
     private void addDataToDatabase(DataBase dataBase) {
         // Sample data for diseases
         String[] names = {"Skin Cancer", "Sunburn", "Cataracts", "Pterygium","Immunosuppression", "Age-Related Macular Degeneration (ARMD)"};
@@ -96,7 +95,7 @@ public class Health extends Fragment {
         };
         int[] photos = {R.drawable.img_disease01, R.drawable.img_disease03, R.drawable.img_disease06, R.drawable.img_disease05, R.drawable.img_disease02, R.drawable.img_disease04};
 
-        // Agregar información a la base de datos
+        // Add information to the database for each illness if it's not already present
         for (int i = 0; i < names.length; i++) {
             // Verificar si la enfermedad ya existe en la base de datos
             List<Illness> existingIllnesses = dataBase.getIllnessDAO().getAllIllnesses();
@@ -112,26 +111,27 @@ public class Health extends Fragment {
             }
 
             if (!illnessExists) {
-                // Convertir el recurso de imagen a byte array
+                // Convert the image resource to byte array
                 byte[] imageByteArray = getByteArrayFromDrawableResource(photos[i]);
 
-                // Agregar la enfermedad a la base de datos
+                // Add the illness to the database
                 dataBase.getIllnessDAO().addIllness(new Illness(names[i], descriptions[i], imageByteArray));
             }
         }
     }
 
+    // Method to convert drawable resource to byte array
     private byte[] getByteArrayFromDrawableResource(int drawableResourceId) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableResourceId);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
+
+    // Method to get the current activity fragment
     public Fragment getCurrentActivity() {
         return this;
     }
-    // Adapter for the RecyclerView
-
 }
 
 

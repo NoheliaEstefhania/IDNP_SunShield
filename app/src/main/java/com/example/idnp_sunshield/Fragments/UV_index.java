@@ -6,9 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import com.example.idnp_sunshield.Models.current;
 import com.example.idnp_sunshield.SharePreferences.LocationPreferences;
 import com.example.idnp_sunshield.databinding.FragmentUVIndexBinding;
 
-import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +41,7 @@ public class UV_index extends Fragment {
         binding = FragmentUVIndexBinding.inflate(getLayoutInflater());
     }
 
-    // Dentro de la clase UV_index, registra el Broadcast Receiver
+    // Broadcast Receiver to handle UV index updates
     private BroadcastReceiver uviUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -59,18 +56,18 @@ public class UV_index extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment using the binding object
         binding = FragmentUVIndexBinding.inflate(inflater, container, false);
-        // Registra el Broadcast Receiver
+        // Register the Broadcast Receiver
         System.out.println("ANTES DE ON RECEIVE BROADCAST");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.example.idnp_sunshield.ACTION_UVI_UPDATE");
         requireActivity().registerReceiver(uviUpdateReceiver, intentFilter);
 
-        // Fetch weather data and update UI components
-        fetchWeather();
+        // Fetch and update UI components
+        fetchUVIndex();
         return binding.getRoot();
     }
 
-    // En el método onDestroyView, desregistra el Broadcast Receiver
+    // Unregister the Broadcast Receiver when the view is destroyed
     @Override
     public void onDestroyView() {
         requireActivity().unregisterReceiver(uviUpdateReceiver);
@@ -78,14 +75,14 @@ public class UV_index extends Fragment {
     }
 
     // Fetches weather data using Retrofit and OpenWeatherMap API
-    public void fetchWeather() {
+    public void fetchUVIndex() {
         // Create a Retrofit instance with the base URL and GsonConverterFactory
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        // Create an instance of the InterfaceApi using the Retrofit instance
+        // Update UI components with UV index value
         InterfaceApi interfaceApi = retrofit.create(InterfaceApi.class);
         Context context = requireContext();
         LocationPreferences locationPreferences = new LocationPreferences(requireContext());

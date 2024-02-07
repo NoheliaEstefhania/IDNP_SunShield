@@ -90,10 +90,17 @@ public class BarChartView extends View {
     // Method to draw a label and a horizontal line on the Y-axis
     private void drawYAxisLabelAndLine(Canvas canvas, String text, float y) {
         // Draw the label text at the specified position
-        canvas.drawText(text, 20, y, paint);
+        /*canvas.drawText(text, 15, y, paint);
 
         // Draw a horizontal line on the Y-axis, from the left end to the right end of the canvas
-        canvas.drawLine(0, y, getWidth(), y, paint);
+        canvas.drawLine(0, y, getWidth(), y, paint);*/
+
+        paint.setColor(Color.BLACK);
+        paint.setColor(Color.GRAY);
+        canvas.drawText(text, 15, y, paint);
+
+        // Draw a horizontal line on the Y-axis, considering the height of the bars
+        canvas.drawLine(100, y, getWidth(), y, paint);
     }
 
     // Method to get the height of the bar based on the UV index
@@ -132,7 +139,8 @@ public class BarChartView extends View {
     // Method to format the date based on timestamp
     private String date(long timestamp){
         java.util.Date time=new java.util.Date((long)timestamp*1000);
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM");
+        //java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM");
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd");
         sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/Lima"));
         String formattedDate = sdf.format(time);
         System.out.println("Fecha formateada: " + formattedDate);

@@ -58,28 +58,33 @@ public class Locations extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment using the binding object
         binding = FragmentLocationBinding.inflate(inflater, container, false);
-        // Fetch weather data and update UI components
+
+        // Set button click listener to fetch
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Manejar el clic del botón aquí
                 countryLocation = binding.locationText.getText().toString();
                 if (TextUtils.isEmpty(countryLocation)) {
-                    // Manejar el caso donde el texto está vacío
-                    countryLocation = "London"; // O proporciona un valor predeterminado
+                    countryLocation = "London";
                 }
                 System.out.println("countryLocation: " + countryLocation);
-                fetchWeather(countryLocation);
+                fetchLocations(countryLocation);
             }
         });
+        // Fetch weather data for default location (London) on fragment creation
         if(TextUtils.isEmpty(binding.locationText.getText().toString())){
             countryLocation = "London";
-            fetchWeather(countryLocation);
+            fetchLocations(countryLocation);
         }
 
         return binding.getRoot();
     }
+
+
+    // Method to handle data related to the selected location
     private void data(String countryLocation) {
+        // Create or open the Room database
         DataBase dataBase = Room.databaseBuilder(
                 getActivity().getApplicationContext(),
                 DataBase.class,
@@ -95,6 +100,7 @@ public class Locations extends Fragment {
 
         boolean locationAlreadyRegistered = false;
 
+        // Check if the current location is already registered in the database
         for (Location location : locationsList) {
             System.out.println("Impresion de valor de location.getLatitude() : "+ location.getLatitude());
             System.out.println("Impresion de valor de latitud : "+ latitud);
@@ -108,14 +114,10 @@ public class Locations extends Fragment {
             }
         }
 
+        // If the location is not registered, add it to the database
         if (!locationAlreadyRegistered) {
-            /*if(locationsList.isEmpty()){
-                System.out.println("Primer registro");
-                dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation, true));
-            }*/
             System.out.println("entre al registro");
             dataBase.getLocationDAO().addLocation(new Location(longitud, latitud, countryLocation, locationsList.isEmpty()));
-
         }
 
         locationsList = dataBase.getLocationDAO().getAllLocations();
@@ -135,23 +137,14 @@ public class Locations extends Fragment {
         System.out.println("SERVICE latitude: " + locationsList.get(0).getLatitude());
         System.out.println("SERVICE longitude: " + locationsList.get(0).getLongitude());
 
-        // Obtener la instancia de LocationPreferences
-        LocationPreferences locationPreferences = new LocationPreferences(requireContext());
-
-        /*// Establecer la información de ubicación
-        double latitude = locationsList.get(0).getLatitude();  // Reemplaza con la latitud real
-        double longitude = locationsList.get(0).getLongitude();  // Reemplaza con la longitud real
-        String title = locationsList.get(0).getTitle();  // Reemplaza con el título real
-
-        locationPreferences.saveLocation(longitude, latitude , title);*/
-
         /*for (int i = 0; i < locationsList.toArray().length; i++) {
             dataBase.getLocationDAO().deleteLocation(locationsList.get(i));
         }*/
         System.out.println("Cantidad de valores de locationsList después: " + locationsList.size());
     }
 
-    public void fetchWeather(String countryLocation) {
+    // Method to fetch data using Retrofit
+    public void fetchLocations(String countryLocation) {
         // Create a Retrofit instance with the base URL and GsonConverterFactory
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/")

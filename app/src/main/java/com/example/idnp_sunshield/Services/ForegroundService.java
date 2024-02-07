@@ -22,40 +22,40 @@ import com.example.idnp_sunshield.R;
 
 public class ForegroundService extends Service {
 
+    // Notification channel ID for the foreground service
     private static final String CHANNEL_ID = "ForegroundServiceChannel";
     private BroadcastReceiver uviUpdateReceiver;
     private NotificationManager notificationManager;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // Create notification channel
         createNotificationChannel();
         System.out.println("Notificacion EMPEZANDO");
+        // Create an intent to open MainActivity when notification is clicked
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        /*Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("My Foreground Service")
-                .setSmallIcon(R.drawable.img_disease01)
-                .setContentIntent(pendingIntent)
-                .build();*/
+        // Build the notification
         Notification notification = buildNotification("My Foreground Service", "Content Text", pendingIntent);
 
+        // Start the service in the foreground with the notification
         startForeground(1, notification);
 
-        // Registra el BroadcastReceiver para recibir actualizaciones del servicio en segundo plano
+        // Register the BroadcastReceiver to receive updates from the background service
         uviUpdateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 double uviValue = intent.getDoubleExtra("UVI_VALUE", 0);
 
-                // Actualiza la notificación con el nuevo valor numérico
+                // Update the notification with the new UV index value
                 updateNotification(uviValue);
             }
         };
         IntentFilter intentFilter = new IntentFilter(BackgroundService.ACTION_UVI_UPDATE);
         registerReceiver(uviUpdateReceiver, intentFilter);
-
+        // Return START_NOT_STICKY to ensure the service is not restarted automatically
         return START_NOT_STICKY;
     }
 
@@ -64,11 +64,13 @@ public class ForegroundService extends Service {
         return null;
     }
 
+    // Method to create the notification channel for the foreground service
     private void createNotificationChannel() {
         System.out.println("METODO DE createNotificationChannel");
 
         notificationManager = getSystemService(NotificationManager.class);
 
+        // Check if notification manager is available and create the notification channel
         if (notificationManager == null) {
             System.out.println("Notification Manager es nulo por alguna razón");
             return;
@@ -93,6 +95,8 @@ public class ForegroundService extends Service {
             System.out.println("VERSION NO COMPATIBLE");
         }
     }
+
+    // Method to build the notification
     private Notification buildNotification(String title, String contentText, PendingIntent pendingIntent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(title)
@@ -102,16 +106,8 @@ public class ForegroundService extends Service {
 
         return builder.build();
     }
-    /*private void updateNotification(double uviValue) {
-        // Actualiza la notificación con el nuevo valor numérico
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("My Foreground Service")
-                .setContentText("Valor actualizado: " + uviValue)
-                .setSmallIcon(R.drawable.img_disease01)
-                .build();
 
-        notificationManager.notify(1, notification);
-    }*/
+    // Method to update the notification with the new UV index value
     private void updateNotification(double uviValue) {
         // Actualiza la notificación con el nuevo valor numérico
         Notification notification = buildNotification("My Foreground Service", "Valor actualizado: " + uviValue, null);
@@ -120,7 +116,7 @@ public class ForegroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Asegúrate de desregistrar el BroadcastReceiver cuando el servicio se destruya
+        // Unregister the BroadcastReceiver when the service is destroyed
         unregisterReceiver(uviUpdateReceiver);
     }
 }

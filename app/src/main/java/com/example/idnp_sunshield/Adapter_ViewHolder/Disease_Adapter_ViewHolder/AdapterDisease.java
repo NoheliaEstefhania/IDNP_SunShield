@@ -23,12 +23,13 @@ public class AdapterDisease extends RecyclerView.Adapter<AdapterDisease.AdapterD
     List<Illness> illnessList;
     Fragment fragment;
 
-    // Constructor que acepta una lista de enfermedades
+    // Constructor that accepts a list of illnesses and a fragment
     public AdapterDisease(List<Illness> illnessList,Fragment fragment ) {
         this.illnessList = illnessList;
         this.fragment = fragment;
     }
 
+    // Method called when a new ViewHolder needs to be created
     @NonNull
     @Override
     public AdapterDiseaseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,11 +38,13 @@ public class AdapterDisease extends RecyclerView.Adapter<AdapterDisease.AdapterD
         return new AdapterDiseaseHolder(view);
     }
 
+    // Method called to get the total number of items in the RecyclerView
     @Override
     public int getItemCount() {
         return illnessList.size();
     }
 
+    // Method called to bind data to each item in the RecyclerView
     @Override
     public void onBindViewHolder(@NonNull AdapterDiseaseHolder holder, int position) {
         // Bind data to each item in the RecyclerView

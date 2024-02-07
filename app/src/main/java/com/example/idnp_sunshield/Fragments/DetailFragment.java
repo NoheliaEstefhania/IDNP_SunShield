@@ -30,9 +30,7 @@ public class DetailFragment extends Fragment {
     public DetailFragment() {
         // Required empty public constructor
     }
-
-    // TODO: Rename and change types and number of parameters
-    // En la clase DetailFragment de UV_index
+    // Factory method to create a new instance of DetailFragment with parameters
     public static DetailFragment newInstance(String name, String description, byte[] image) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
@@ -74,18 +72,19 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
-    // Create a new instance of DetailFragment with parameters
+    // Factory method to create a new instance of DetailFragment with parameters
     public static DetailFragment newInstance(String name, String description, int imageResource) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_NAME, name);
         args.putString(ARG_DESCRIPTION, description);
-        // Puedes convertir el recurso de imagen a bytes si lo necesitas
+        // Convert image resource to byte array
         args.putByteArray(ARG_IMAGE_RESOURCE, convertImageResourceToByteArray(imageResource));
         fragment.setArguments(args);
         return fragment;
     }
 
+    // Method to convert image resource to byte array
     private static byte[] convertImageResourceToByteArray(int imageResource) {
         Bitmap bitmap = BitmapFactory.decodeResource(Resources.getSystem(), imageResource);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
