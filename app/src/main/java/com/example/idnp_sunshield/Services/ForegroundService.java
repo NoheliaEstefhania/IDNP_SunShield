@@ -102,6 +102,7 @@ public class ForegroundService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(contentText)
+                .setSmallIcon(R.drawable.img_disease01)
                 .setLargeIcon(largeIcon)
                 .setContentIntent(pendingIntent);
 
